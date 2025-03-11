@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@media (max-width: 600px) {
+    
+    #cardContainer, #signUpContainer {
+        max-width: 350px;
+        box-shadow: none;
+        border: none;
+        background-image: radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%));
+        background: none;
+    }
+    
+}
