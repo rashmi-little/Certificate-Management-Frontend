@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -24,6 +24,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import { useNavigate } from "react-router-dom";
 import "../../index.css";
 import { useForm } from "react-hook-form";
+import { FormHelperText } from "@mui/material";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -68,7 +69,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -76,6 +77,7 @@ export default function SignIn(props) {
     formState: { errors },
     reset,
     clearErrors,
+    watch
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
@@ -83,6 +85,12 @@ export default function SignIn(props) {
       password: "",
     },
   });
+  const [loginError, setLoginError] = useState("");
+
+  // login error message should not display when user retries
+  useEffect(()=>{
+      setLoginError("")
+  },[watch("email"), watch("password")])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -96,22 +104,23 @@ export default function SignIn(props) {
   const handleFormSubmit = (data) => {
     console.log(data);
     // checking the login details
-    if(data.email === "user@gmail.com" && data.password === "pass") {
+    if (data.email === "user@gmail.com" && data.password === "pass") {
+      localStorage.setItem("isLoggedIn", true);
       reset({
         email: "",
         password: "",
       });
       navigate("/home");
-    }
-    else {
+    } else {
       // Show invalid credentials message
+      setLoginError("Invalid email or password. Please try again.");
     }
   };
 
   // Handle sign-up click navigate
-  const handleSignUpClick = () => {
-    navigate("/signup");
-  };
+  // const handleSignUpClick = () => {
+  //   navigate("/signup");
+  // };
 
   return (
     <AppTheme {...props}>
@@ -192,7 +201,11 @@ export default function SignIn(props) {
                 variant="outlined"
               />
             </FormControl>
-            
+            {loginError && (
+              <FormControl error>
+                <FormHelperText>{loginError}</FormHelperText>
+              </FormControl>
+            )}
             <ForgotPassword open={open} handleClose={handleClose} />
             <Button type="submit" fullWidth variant="contained">
               Sign in
@@ -207,7 +220,7 @@ export default function SignIn(props) {
               Forgot your password?
             </Link>
           </Box>
-          <Divider>or</Divider>
+          {/* <Divider>or</Divider> */}
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {/* <Button
               fullWidth
@@ -225,7 +238,7 @@ export default function SignIn(props) {
             >
               Sign in with Facebook
             </Button> */}
-            <Typography sx={{ textAlign: "center" }}>
+            {/* <Typography sx={{ textAlign: "center" }}>
               Don&apos;t have an account?{" "}
               <Link
                 onClick={handleSignUpClick}
@@ -234,8 +247,9 @@ export default function SignIn(props) {
               >
                 Sign up
               </Link>
-            </Typography>
+            </Typography> */}
           </Box>
+          
         </Card>
       </SignInContainer>
     </AppTheme>

@@ -1,12 +1,22 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Login from '../pages/Login'
+import {Outlet } from 'react-router-dom'
+import SignIn from '../pages/sign-in/SignIn';
+import Homepage from '../pages/user/Homepage';
 
-const ProtectedLayout = ({isLoggedIn}) => {
-  return (
-    // If not loggedin, redirect to login page
-    isLoggedIn ? <Outlet/> : <Login/>
-  )
+const ProtectedLayout = ({role}) => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const userRole = localStorage.getItem("role");
+
+  if(!isLoggedIn) {
+    return <SignIn/>
+  }
+
+  if(userRole !== role) {
+    return <Homepage/>
+  }
+
+  return <Outlet/>
+
 }
 
 export default ProtectedLayout
