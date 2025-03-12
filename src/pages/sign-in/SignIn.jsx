@@ -81,16 +81,16 @@ export default function SignIn(props) {
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
   const [loginError, setLoginError] = useState("");
 
   // login error message should not display when user retries
-  useEffect(()=>{
-      setLoginError("")
-  },[watch("email"), watch("password")])
+  useEffect(() => {
+    setLoginError("")
+  }, [watch("username"), watch("password")])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -104,23 +104,28 @@ export default function SignIn(props) {
   const handleFormSubmit = (data) => {
     console.log(data);
     // checking the login details
-    if (data.email === "user@gmail.com" && data.password === "pass") {
-      localStorage.setItem("isLoggedIn", true);
-      reset({
-        email: "",
-        password: "",
-      });
-      navigate("/home");
-    } else {
+    if ((data.username === "user" && data.password === "pass") ||
+        (data.username === "admin" && data.password === "pass")) {
+          localStorage.setItem("isLoggedIn", "true");
+          // set role
+          const userRole = data.username === "admin" ? "ADMIN" : "USER";
+          localStorage.setItem("role", userRole);
+
+          // TRIGGER RE-RENDER IMMEDIATELY
+          props.setIsLoggedIn("true");
+          props.setRole(userRole);
+          // window.dispatchEvent(new Event("storage"));
+          reset({
+            username: "",
+            password: "",
+          });
+          navigate("/");
+    }
+    else {
       // Show invalid credentials message
-      setLoginError("Invalid email or password. Please try again.");
+      setLoginError("Invalid username or password. Please try again.");
     }
   };
-
-  // Handle sign-up click navigate
-  // const handleSignUpClick = () => {
-  //   navigate("/signup");
-  // };
 
   return (
     <AppTheme {...props}>
@@ -156,24 +161,20 @@ export default function SignIn(props) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="username">Username</FormLabel>
               <TextField
-                error={errors?.email?.message}
-                helperText={errors?.email?.message}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
-                {...register("email", {
+                error={errors?.username?.message}
+                helperText={errors?.username?.message}
+                id="username"
+                type="text"
+                name="username"
+                placeholder="Enter your username"
+                autoComplete="username"
+                {...register("username", {
                   required: {
                     value: true,
-                    message: "Please enter your email",
-                  },
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Invalid email address",
-                  },
+                    message: "Please enter username",
+                  }
                 })}
                 required
                 fullWidth
@@ -220,36 +221,6 @@ export default function SignIn(props) {
               Forgot your password?
             </Link>
           </Box>
-          {/* <Divider>or</Divider> */}
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {/* <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Sign in with Facebook
-            </Button> */}
-            {/* <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
-              <Link
-                onClick={handleSignUpClick}
-                variant="body2"
-                sx={{ alignSelf: "center", cursor: "pointer" }}
-              >
-                Sign up
-              </Link>
-            </Typography> */}
-          </Box>
-          
         </Card>
       </SignInContainer>
     </AppTheme>

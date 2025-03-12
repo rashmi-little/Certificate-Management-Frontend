@@ -1,18 +1,17 @@
 import React from 'react'
-import {Outlet } from 'react-router-dom'
-import SignIn from '../pages/sign-in/SignIn';
+import {Navigate, Outlet } from 'react-router-dom'
 import Homepage from '../pages/user/Homepage';
 
 const ProtectedLayout = ({role}) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const userRole = localStorage.getItem("role");
 
   if(!isLoggedIn) {
-    return <SignIn/>
+    return <Navigate to="/login" />
   }
 
   if(userRole !== role) {
-    return <Homepage/>
+    return <Navigate to="/" />
   }
 
   return <Outlet/>
