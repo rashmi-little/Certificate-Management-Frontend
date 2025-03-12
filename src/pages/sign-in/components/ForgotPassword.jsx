@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -8,17 +8,26 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { useForm } from "react-hook-form";
-import { FormControl, FormHelperText } from "@mui/material";
+import { FormControl, FormHelperText, useMediaQuery, useTheme } from "@mui/material";
+import OtpDialog from "../../../components/OtpDialog";
 
 function ForgotPassword({ open, handleClose }) {
+  // const [openOtp, setOtpOpen] = useState(false);
   const { register, handleSubmit,formState: {errors} } = useForm();
+  const theme = useTheme();
+  // Fullscreen on Mobile screens
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleContinue = (data) => {
     console.log(data);
     handleClose();
+
+    // setOtpOpen(true);
   };
+
   return (
-    <Dialog open={open} onClose={handleClose} sx={{ backgroundImage: "none" }}>
+    <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}
+    sx={{ backgroundImage: "none" }}>
       <DialogTitle>Reset password</DialogTitle>
       <DialogContent
         sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
@@ -58,6 +67,7 @@ function ForgotPassword({ open, handleClose }) {
           Continue
         </Button>
       </DialogActions>
+      {/* <OtpDialog open={openOtp} setOtpOpen={setOtpOpen} /> */}
     </Dialog>
   );
 }

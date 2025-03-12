@@ -6,22 +6,33 @@ import SignIn from "../pages/sign-in/SignIn";
 import Dashboard from "../pages/admin/Dashboard";
 
 const AppRoutes = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === true);
-  const role = localStorage.getItem("role");
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
+  const [role, setRole] = useState(localStorage.getItem("role"));
+
   useEffect(()=>{
-    setIsLoggedIn(localStorage.getItem("isLoggedIn") === true)
-  },[localStorage.getItem("isLoggedIn")])
+    const handleStorageChange = () => {
+        setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+        setRole(localStorage.getItem("role"));
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup to prevent infinite rerenders
+    return () => {
+      window.removeEventListener("storage", handleStorageChange); 
+    };
+  },[])
+
   return (
     <div>
       <Routes>
         {/* Redirect "/" based on login status */}
         <Route
           path="/"
-          element={<Navigate to={ isLoggedIn ? {role === "USER" ? "/home" : "/dashboard"} : "/login"} />}
+          element={<Navigate to={ isLoggedIn ? (role === "USER" ? "/home" : "/dashboard") : "/login"} />}
         />
 
         {/* Public Routes*/}
-        <Route path="/login" element={<SignIn />} />
+        <Route path="/login" element={<SignIn setIsLoggedIn={setIsLoggedIn} setRole={setRole}  />} />
         
 
         {/* Protected Routes */}
