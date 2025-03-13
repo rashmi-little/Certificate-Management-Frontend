@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
@@ -14,17 +11,13 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import AppTheme from "../shared-theme/AppTheme";
-import ColorModeSelect from "../shared-theme/ColorModeSelect";
-import {
-  GoogleIcon,
-  FacebookIcon,
-  SitemarkIcon,
-} from "./components/CustomIcons";
 import ForgotPassword from "./components/ForgotPassword";
 import { useNavigate } from "react-router-dom";
 import "../../index.css";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { FormHelperText } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserFromToken, login } from "../../redux/login/Action";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -74,23 +67,48 @@ export default function SignIn(props) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
     clearErrors,
     watch
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
   const [loginError, setLoginError] = useState("");
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.login?.user);
+  // const [token, setToken] = useState(localStorage.getItem("token"));
+  const token = useSelector(state => state.login?.token);
+  const error = useSelector(state => state.login?.loginError);
+
+  // display login error details
+  useEffect(()=>{
+    if(error) {
+      setLoginError(error);
+    }
+  },[error])
+
+  useEffect(() => {
+    if (token) {
+      console.log("Calling user profile from token..")
+      dispatch(getUserFromToken());
+    }
+  }, [token])
+
+  useEffect(()=>{
+    if(user) {
+      user.role === "USER" ?  navigate("/home") : navigate("/dashboard");
+    }
+  },[user])
 
   // login error message should not display when user retries
   useEffect(() => {
     setLoginError("")
-  }, [watch("username"), watch("password")])
+  }, [watch("email"), watch("password")])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -103,28 +121,18 @@ export default function SignIn(props) {
 
   const handleFormSubmit = (data) => {
     console.log(data);
-    // checking the login details
-    if ((data.username === "user" && data.password === "pass") ||
-        (data.username === "admin" && data.password === "pass")) {
-          localStorage.setItem("isLoggedIn", "true");
-          // set role
-          const userRole = data.username === "admin" ? "ADMIN" : "USER";
-          localStorage.setItem("role", userRole);
-
-          // TRIGGER RE-RENDER IMMEDIATELY
-          props.setIsLoggedIn("true");
-          props.setRole(userRole);
-          // window.dispatchEvent(new Event("storage"));
-          reset({
-            username: "",
-            password: "",
-          });
-          navigate("/");
+    const reqData = {
+      data: {
+        email: data.email,
+        password: data.password,
+      }
     }
-    else {
-      // Show invalid credentials message
-      setLoginError("Invalid username or password. Please try again.");
-    }
+    // Dispatch the login action
+    dispatch(login(reqData));
+    reset({
+      email: "",
+      password: "",
+    })
   };
 
   return (
@@ -161,20 +169,24 @@ export default function SignIn(props) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="username">Username</FormLabel>
+              <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
-                error={errors?.username?.message}
-                helperText={errors?.username?.message}
-                id="username"
-                type="text"
-                name="username"
-                placeholder="Enter your username"
-                autoComplete="username"
-                {...register("username", {
+                error={errors?.email?.message}
+                helperText={errors?.email?.message}
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                autoComplete="email"
+                {...register("email", {
                   required: {
                     value: true,
-                    message: "Please enter username",
-                  }
+                    message: "Please enter your email",
+                  },
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Invalid email !",
+                  },
                 })}
                 required
                 fullWidth
@@ -204,12 +216,15 @@ export default function SignIn(props) {
             </FormControl>
             {loginError && (
               <FormControl error>
-                <FormHelperText>{loginError}</FormHelperText>
+                <FormHelperText sx={{ fontSize: "0.9rem"}}>{loginError}</FormHelperText>
               </FormControl>
             )}
             <ForgotPassword open={open} handleClose={handleClose} />
-            <Button type="submit" fullWidth variant="contained">
-              Sign in
+            <Button type="submit" fullWidth variant="contained"
+            disabled={isSubmitting}
+            sx={{backgroundColor: isSubmitting ? "grey.500" : ""}}
+            >
+              {isSubmitting ?  "Signing in..." : "Sign in"}
             </Button>
             <Link
               component="button"
