@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Homepage from "../pages/user/Homepage";
 import ProtectedLayout from "./ProtectedLayout";
 import SignIn from "../pages/sign-in/SignIn";
-import Dashboard from "../pages/admin/Dashboard";
+import Dashboard from "../pages/Dashboard";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getUserFromToken } from "../redux/login/Action";
+import ResetPassword from "../pages/sign-in/components/ResetPassword";
 
 const AppRoutes = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
-  const [role, setRole] = useState(localStorage.getItem("role"));
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
-  useEffect(()=>{
-    const handleStorageChange = () => {
-        setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-        setRole(localStorage.getItem("role"));
-    };
-    window.addEventListener("storage", handleStorageChange);
-
-    // Cleanup to prevent infinite rerenders
-    return () => {
-      window.removeEventListener("storage", handleStorageChange); 
-    };
-  },[])
+  useEffect(() => {
+      if (token) {
+        dispatch(getUserFromToken());
+      }
+    }, [token])
 
   return (
     <div>
@@ -28,20 +24,15 @@ const AppRoutes = () => {
         {/* Redirect "/" based on login status */}
         <Route
           path="/"
-          element={<Navigate to={ isLoggedIn ? (role === "USER" ? "/home" : "/dashboard") : "/login"} />}
+          element={<Navigate to={ (token) ? "/dashboard" : "/login"} />}
         />
 
         {/* Public Routes*/}
-        <Route path="/login" element={<SignIn setIsLoggedIn={setIsLoggedIn} setRole={setRole}  />} />
-        
-
-        {/* Protected Routes */}
-        <Route element={<ProtectedLayout role="USER" />}>
-          <Route path="/home" element={<Homepage />} />
-        </Route>
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/reset-password" element={<ResetPassword/>} />
 
         {/* Admin Routes */}
-        <Route element={<ProtectedLayout role="ADMIN" />}>
+        <Route element={<ProtectedLayout/>}>
             <Route path="/dashboard" element={<Dashboard/>} />
         </Route>
       </Routes>

@@ -1,18 +1,22 @@
-import React from 'react'
 import {Navigate, Outlet } from 'react-router-dom'
-import Homepage from '../pages/user/Homepage';
+import Loader from '../components/Loader';
 
 const ProtectedLayout = ({role}) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("role");
 
-  if(!isLoggedIn) {
+  if(!token) {
     return <Navigate to="/login" />
   }
 
-  if(userRole !== role) {
-    return <Navigate to="/" />
-  }
+  // Prevent immediate redirecting, if role is not available
+  // if(!userRole) {
+  //   return <Loader/>;
+  // }
+
+  // if(userRole !== role) {
+  //   return <Navigate to={userRole === "USER" ? "/home" : "/dashboard"} />
+  // }
 
   return <Outlet/>
 
