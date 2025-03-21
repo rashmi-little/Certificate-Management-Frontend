@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@media (max-width: 400px) {
+    
+    .MuiDrawer-paper {
+        width: 75% !important;
+    }
+
+}
