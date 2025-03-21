@@ -19,7 +19,6 @@ function ForgotPassword({ open, handleClose }) {
   // Fullscreen on Mobile screens
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const validEmail = useSelector(state => state?.login?.validEmail);
   const passwordResetLinkSent = useSelector(state => state?.login?.passwordResetLinkSent);
   const emailError = useSelector(state => state?.login?.emailError);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -35,15 +34,15 @@ function ForgotPassword({ open, handleClose }) {
   };
 
   useEffect(() => {
-    if (validEmail && passwordResetLinkSent) {
+    if (passwordResetLinkSent) {
       handleClose();
     }
-  }, [validEmail, passwordResetLinkSent])
+  }, [passwordResetLinkSent])
 
   useEffect(() => {
     if (emailError) {
       setOpenSnackbar(true);
-      setAlertMessage("Please try again ");
+      setAlertMessage(emailError);
     }
   }, [emailError])
 

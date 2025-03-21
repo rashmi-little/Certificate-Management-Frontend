@@ -21,7 +21,6 @@ const initialState = {
     userLoading: false,
     loginError: null,
     tokenError: null,
-    validEmail: null,
     emailError: null,
     passwordResetLinkSent: null,
     passwordResetSuccess: null,
@@ -45,11 +44,11 @@ export const loginReducer = (state = initialState, { type, payload }) => {
         case CLEAR_LOGIN_ERROR:
             return { ...state, loginError: null };
         case PASSWORD_RESET_LINK_SENT_SUCCESS:
-            return { ...state, validEmail: payload.valid, passwordResetLinkSent: payload };
+            return { ...state, passwordResetLinkSent: payload };
         case PASSWORD_RESET_LINK_SENT_FAILURE:
             return { ...state, emailError: payload };
         case PASSWORD_RESET_LINK_SENT_CLEAR:
-            return {...state, validEmail: null, passwordResetLinkSent: null, emailError: null};
+            return {...state, passwordResetLinkSent: null, emailError: null};
         case PASSWORD_RESET_SUCCESS:
             return { ...state, passwordResetSuccess: payload };
         case PASSWORD_RESET_FAILURE:
