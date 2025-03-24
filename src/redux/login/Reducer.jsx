@@ -7,6 +7,7 @@ import {
     LOGIN_FAILURE,
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
+    LOGOUT,
     PASSWORD_RESET_FAILURE,
     PASSWORD_RESET_LINK_SENT_CLEAR,
     PASSWORD_RESET_LINK_SENT_FAILURE,
@@ -55,6 +56,8 @@ export const loginReducer = (state = initialState, { type, payload }) => {
             return { ...state, passwordResetError: payload };
         case CLEAR_PASSWORD_RESET:
             return { ...state, passwordResetSuccess: null, passwordResetError: null };
+        case LOGOUT:
+            return {...state, token: null, user: null};
         default:
             return state;
     }
