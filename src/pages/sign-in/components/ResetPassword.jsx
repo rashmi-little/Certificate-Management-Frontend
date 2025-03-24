@@ -3,21 +3,14 @@ import {
   Alert,
   Box,
   Button,
-  CssBaseline,
   FormControl,
   FormLabel,
   IconButton,
   InputAdornment,
   Snackbar,
-  styled,
   TextField,
 } from "@mui/material";
-import MuiCard from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import { CircularProgress, FormHelperText } from "@mui/material";
 import { useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
-import AppTheme from "../../shared-theme/AppTheme";
 import { useNavigate } from "react-router-dom";
 import "../../../index.css";
 import { useForm } from "react-hook-form";

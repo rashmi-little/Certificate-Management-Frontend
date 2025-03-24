@@ -83,12 +83,13 @@ export default function SignIn() {
 
   useEffect(() => {
     if (token) {
+      console.log("After Logout, I still have the token with me", token);
       dispatch(getUserFromToken());
     }
   }, [token])
 
   useEffect(() => {
-    if (user) {
+    if (user && token) {
       setBackDropOpen(false);
       navigate("/dashboard")
     }
@@ -145,128 +146,132 @@ export default function SignIn() {
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
-      
-        <SignInContainer
-          // sx={{ height: "100%" }}
-          direction="column"
-          alignContent="center"
-          justifyContent="space-between"
-          id="signInContainer"
-        >
-          <Card id="cardContainer" variant="outlined" className="">
-            {/* <SitemarkIcon /> */}
-            <Typography
-              component="h1"
-              variant="h4"
-              sx={{
-                width: "100%",
-                fontSize: "clamp(2rem, 10vw, 2.15rem)",
-                textAlign: "center",
-              }}
-            >
-              Logo
-            </Typography>
-            <Box
-              noValidate
-              component="form"
-              onSubmit={handleSubmit(handleFormSubmit)}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                gap: 2,
-              }}
-            >
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <TextField
-                  error={!!errors?.email}
-                  helperText={errors?.email?.message}
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  autoComplete="email"
-                  {...register("email", {
-                    required: {
-                      value: true,
-                      message: "Please enter your email",
-                    },
-                    pattern: {
-                      value: /\S+@\S+\.\S+/,
-                      message: "Invalid email !",
-                    },
-                  })}
-                  required
-                  fullWidth
-                  variant="outlined"
-                />
+
+      <SignInContainer
+        sx={{ boxShadow: 3 }}
+        direction="column"
+        alignContent="center"
+        justifyContent="space-between"
+        id="signInContainer"
+      >
+        <Card id="cardContainer" variant="outlined" className="">
+          {/* <SitemarkIcon /> */}
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{
+              width: "100%",
+              fontSize: "clamp(2rem, 10vw, 2.15rem)",
+              textAlign: "center",
+            }}
+          >
+            Logo
+          </Typography>
+          <Box
+            noValidate
+            component="form"
+            onSubmit={handleSubmit(handleFormSubmit)}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              gap: 2,
+            }}
+          >
+            <FormControl>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <TextField
+                error={!!errors?.email}
+                helperText={errors?.email?.message}
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                autoComplete="email"
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Please enter your email",
+                  },
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Invalid email !",
+                  },
+                })}
+                required
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <TextField
+                error={!!errors?.password}
+                helperText={errors?.password?.message}
+                name="password"
+                placeholder="••••••"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                autoComplete="current-password"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Please enter password",
+                  },
+                })}
+                required
+                fullWidth
+                variant="outlined"
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end" >
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)} edge="end"
+                          sx={{
+                            border: "none", outline: "none",
+                            "&:focus": { outline: "none" },
+                            "&:hover": { backgroundColor: "transparent" }
+                          }}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                }}
+              />
+            </FormControl>
+            {loginError && (
+              <FormControl error>
+                <FormHelperText sx={{ fontSize: "0.9rem" }}>{loginError}</FormHelperText>
               </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <TextField
-                  error={!!errors?.password}
-                  helperText={errors?.password?.message}
-                  name="password"
-                  placeholder="••••••"
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  autoComplete="current-password"
-                  {...register("password", {
-                    required: {
-                      value: true,
-                      message: "Please enter password",
-                    },
-                  })}
-                  required
-                  fullWidth
-                  variant="outlined"
-                  slotProps={{
-                    input: {
-                      endAdornment: (
-                        <InputAdornment position="end" >
-                          <IconButton
-                            onClick={() => setShowPassword(!showPassword)} edge="end"
-                            sx={{
-                              border: "none", outline: "none",
-                              "&:focus": { outline: "none" },
-                              "&:hover": { backgroundColor: "transparent" }
-                            }}
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }
-                  }}
-                />
-              </FormControl>
-              {loginError && (
-                <FormControl error>
-                  <FormHelperText sx={{ fontSize: "0.9rem" }}>{loginError}</FormHelperText>
-                </FormControl>
-              )}
-              <ForgotPassword open={open} handleClose={handleClose} />
-              <Button type="submit" fullWidth variant="contained"
-                disabled={isSubmitting}
-                sx={{ backgroundColor: isSubmitting ? "grey.500" : "" }}
-              >
-                {isSubmitting ? "Signing in..." : "Sign in"}
-              </Button>
-              <Link
-                component="button"
-                type="button"
-                onClick={handleClickOpen}
-                variant="body2"
-                sx={{ alignSelf: "center" }}
-              >
-                Forgot your password?
-              </Link>
-            </Box>
-          </Card>
-        </SignInContainer>
+            )}
+            <ForgotPassword open={open} handleClose={handleClose} />
+            <Button type="submit" fullWidth variant="contained"
+              disabled={isSubmitting}
+              sx={{ backgroundColor: isSubmitting ? "grey.500" : "" }}
+            >
+              {isSubmitting ? "Signing in..." : "Sign in"}
+            </Button>
+            <Link
+              component="button"
+              type="button"
+              onClick={handleClickOpen}
+              variant="body2"
+              sx={{ alignSelf: "center" }}
+            >
+              Forgot your password?
+            </Link>
+          </Box>
+        </Card>
+      </SignInContainer>
 
       <Snackbar
+        sx={{
+          backgroundColor: passwordResetSuccess ? "green" : "red",
+          color: "white"
+        }}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
         <Alert
@@ -277,11 +282,11 @@ export default function SignIn() {
           {alertMessage}
         </Alert>
       </Snackbar>
-      
+
       <Backdrop
-      open={backDropOpen}
-      sx={{color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-          <CircularProgress/>
+        open={backDropOpen}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <CircularProgress />
       </Backdrop>
     </AppTheme>
   );
