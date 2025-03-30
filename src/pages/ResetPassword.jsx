@@ -107,7 +107,7 @@ const ResetPassword = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 // width: "100%",
-                                gap: 2,
+                                gap: 4,
                             }}
                         >
                             <FormControl>
@@ -127,7 +127,7 @@ const ResetPassword = () => {
                                             paddingY: "10px"
                                         },
                                         '& .MuiOutlinedInput-root': {
-                                            borderRadius: "12px"
+                                            borderRadius: "10px"
                                         }
                                     }}
                                     error={!!errors?.newPassword}
@@ -194,7 +194,7 @@ const ResetPassword = () => {
                                             paddingY: "10px"
                                         },
                                         '& .MuiOutlinedInput-root': {
-                                            borderRadius: "12px"
+                                            borderRadius: "10px"
                                         }
                                     }}
                                     error={!!errors?.confirmPassword}

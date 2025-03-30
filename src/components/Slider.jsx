@@ -6,7 +6,7 @@ import "./Slider.css"
 
 const Slider = () => {
   return (
-    <div className="w-full h-full bg-amber-200 rounded-3xl p-24">
+    <div className="w-full h-full">
         <Swiper 
           slidesPerView={1}
           effect="fade"
