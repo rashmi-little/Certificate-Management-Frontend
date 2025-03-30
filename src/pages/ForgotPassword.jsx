@@ -102,7 +102,7 @@ const ForgotPassword = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 // width: "100%",
-                                gap: 2,
+                                gap: 4,
                             }}
                         >
                             <FormControl>
@@ -114,7 +114,7 @@ const ForgotPassword = () => {
                                             paddingY: "10px",
                                         },
                                         '& .MuiOutlinedInput-root': {
-                                            borderRadius: "12px"
+                                            borderRadius: "10px"
                                         }
                                     }}
                                     error={!!errors?.email}

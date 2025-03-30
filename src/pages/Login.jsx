@@ -159,7 +159,7 @@ const Login = () => {
                                             paddingY: "10px",
                                         },
                                         '& .MuiOutlinedInput-root': {
-                                            borderRadius: "12px"
+                                            borderRadius: "10px"
                                         }
                                     }}
                                     error={!!errors?.email}
@@ -201,7 +201,7 @@ const Login = () => {
                                             paddingY: "10px"
                                         },
                                         '& .MuiOutlinedInput-root': {
-                                            borderRadius: "12px"
+                                            borderRadius: "10px"
                                         }
                                     }}
                                     error={!!errors?.password}
@@ -257,7 +257,7 @@ const Login = () => {
                                             defaultChecked size="small"
                                             sx={{
                                                 '& .MuiSvgIcon-root': {
-                                                    borderRadius: '8px', // Adjust border-radius here
+                                                    borderRadius: '20px', // Adjust border-radius here
                                                 },
                                                 '&:hover': {
                                                     backgroundColor: 'transparent', // Removes hover background
