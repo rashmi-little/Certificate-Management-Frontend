@@ -1,19 +1,19 @@
 import { api } from "../../config/config";
 import {
-    CLEAR_LOGIN_ERROR,
-    CLEAR_PASSWORD_RESET,
-    GET_USER_FROM_TOKEN_FAILURE,
-    GET_USER_FROM_TOKEN_REQUEST,
-    GET_USER_FROM_TOKEN_SUCCESS,
-    LOGIN_FAILURE,
-    LOGIN_REQUEST,
-    LOGIN_SUCCESS,
-    LOGOUT,
-    PASSWORD_RESET_FAILURE,
-    PASSWORD_RESET_LINK_SENT_CLEAR,
-    PASSWORD_RESET_LINK_SENT_FAILURE,
-    PASSWORD_RESET_LINK_SENT_SUCCESS,
-    PASSWORD_RESET_SUCCESS,
+  CLEAR_LOGIN_ERROR,
+  CLEAR_PASSWORD_RESET,
+  GET_USER_FROM_TOKEN_FAILURE,
+  GET_USER_FROM_TOKEN_REQUEST,
+  GET_USER_FROM_TOKEN_SUCCESS,
+  LOGIN_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGOUT,
+  PASSWORD_RESET_FAILURE,
+  PASSWORD_RESET_LINK_SENT_CLEAR,
+  PASSWORD_RESET_LINK_SENT_FAILURE,
+  PASSWORD_RESET_LINK_SENT_SUCCESS,
+  PASSWORD_RESET_SUCCESS,
 } from "./ActionType";
 
 /**
@@ -26,7 +26,6 @@ import {
  *  @param reqData - The login request data containing user credentials
  */
 export const login = (reqData) => async (dispatch) => {
-  dispatch({ type: CLEAR_LOGIN_ERROR });
   dispatch({ type: LOGIN_REQUEST });
   try {
     const { data } = await api.post("/api/v1/login", reqData.data);
@@ -70,24 +69,17 @@ export const getUserFromToken = () => async (dispatch) => {
  *  @param reqData The email to which the link will be sent
  */
 export const sendPasswordResetLink = (reqData) => async (dispatch) => {
-    try {
-        // const {data} = await api.get("api/validate-email");
-        const data = {
-            valid: true,
-            passwordResetLinkSent: true,
-        }
-        throw new Error();
-        dispatch({ type: PASSWORD_RESET_LINK_SENT_SUCCESS, payload: data });
-        console.log("Password reset link sent successfully", data);
-    } catch (error) {
-        dispatch({ type: PASSWORD_RESET_LINK_SENT_FAILURE, payload: "Error while sending reset password link" });
-        console.error("Error while sending password reset link", error);
-    }
-    finally {
-        setTimeout(() => {
-            dispatch({ type: PASSWORD_RESET_LINK_SENT_CLEAR })
-        }, 3000);
-    }
+  try {
+    const { data } = await api.post(`/api/v1/user-service/reset-token?email=${reqData.email}`);
+    const payload = {
+      passwordResetLinkSent: true
+    };
+    dispatch({ type: PASSWORD_RESET_LINK_SENT_SUCCESS, payload: payload });
+    console.log("Password reset link sent successfully", data);
+  } catch (error) {
+    dispatch({ type: PASSWORD_RESET_LINK_SENT_FAILURE, payload: error?.response?.data?.detail });
+    console.error("Error while sending password reset link", error);
+  }
 }
 
 /**
@@ -96,33 +88,32 @@ export const sendPasswordResetLink = (reqData) => async (dispatch) => {
  */
 export const resetPassword = (reqData) => async (dispatch) => {
 
-    try {
-        // const {data} = await api.post()
-        const data = {
-            passwordReset: true,
-        }
-        throw new Error("Custom Error message");
-        dispatch({ type: PASSWORD_RESET_SUCCESS, payload: data });
-        console.log("Password reset successfully", data);
-    } catch (error) {
-        dispatch({ type: PASSWORD_RESET_FAILURE, payload: "Error reseting password" });
-        console.error("Error while password reset ", error);
-    }
-    finally {
-        // Clear the state to handle the state change
-        setTimeout(() => {
-            dispatch({ type: CLEAR_PASSWORD_RESET })
-        }, 3000);
-    }
+  try {
+    const {data} = await api.post("/api/v1/user-service/reset-password", reqData);
+    const payload = {
+      passwordReset: true,
+    };
+    dispatch({ type: PASSWORD_RESET_SUCCESS, payload: payload });
+    console.log("Password reset successfully", data);
+  } catch (error) {
+    dispatch({ type: PASSWORD_RESET_FAILURE, payload: error.response.data.detail });
+    console.error("Error while password reset ", error);
+  }
+  finally {
+    // Clear the state to handle the state change
+    setTimeout(() => {
+      dispatch({ type: CLEAR_PASSWORD_RESET })
+    }, 3000);
+  }
 }
 
 export const logout = () => (dispatch) => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    try {
-        dispatch({type: LOGOUT});
-        console.log("Logged out successfully ");
-    } catch (error) {
-        console.error("Error while logging out ", error);
-    }
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  try {
+    dispatch({ type: LOGOUT });
+    console.log("Logged out successfully ");
+  } catch (error) {
+    console.error("Error while logging out ", error);
+  }
 }

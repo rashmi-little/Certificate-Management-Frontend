@@ -1,10 +1,19 @@
 import { render, screen } from "@testing-library/react"
-import ResetPassword from "../../pages/sign-in/components/ResetPassword"
 import { Provider } from "react-redux"
 import { store } from "../../redux/store"
 import { BrowserRouter } from "react-router-dom"
 import { expect } from "vitest"
 import userEvent from "@testing-library/user-event"
+import ResetPassword from "../../pages/ResetPassword"
+
+vi.mock("@mui/material", async () => {
+    const actualMaterial = await vi.importActual('@mui/material');
+    
+    return {
+      ...actualMaterial,     
+      useMediaQuery: vi.fn(),
+    };
+  });
 
 const renderResetPassword = () => {
     return render(<ResetPassword />, {
@@ -20,16 +29,14 @@ describe("ResetPassword", () => {
 
     test("renders properly", () => {
         renderResetPassword();
-        const newPasswordText = screen.getByText("New Password");
-        expect(newPasswordText).toBeInTheDocument();
-        const newPasswordPlaceholderText = screen.getByPlaceholderText("Enter new password");
-        expect(newPasswordPlaceholderText).toBeInTheDocument();
-        const confirmPasswordText = screen.getByText("Confirm Password");
-        expect(confirmPasswordText).toBeInTheDocument();
-        const confirmPasswordPlaceholderText = screen.getByPlaceholderText("Re enter new password");
-        expect(confirmPasswordPlaceholderText).toBeInTheDocument();
-        const submitButton = screen.getByRole("button", {name: "Submit"});
-        expect(submitButton).toBeInTheDocument();
+        expect(screen.getByAltText("mindfire logo")).toBeInTheDocument();
+        expect(screen.getByText("Reset Your Password")).toBeInTheDocument();
+        expect(screen.getByText("Create a new password below")).toBeInTheDocument();
+        expect(screen.getByLabelText("Create New Password")).toBeInTheDocument();
+        expect(screen.getByPlaceholderText("Create New Password")).toBeInTheDocument();
+        expect(screen.getByLabelText("Confirm New Password")).toBeInTheDocument();
+        expect(screen.getByPlaceholderText("Confirm New Password")).toBeInTheDocument();
+        expect(screen.getByRole("button" ,{name: "Submit"})).toBeInTheDocument();
         const visibilityOffIcon = screen.getByTestId("VisibilityOffIcon");
         expect(visibilityOffIcon).toBeInTheDocument();
     })
@@ -37,9 +44,8 @@ describe("ResetPassword", () => {
     test("renders error messages for input fields when submit without enter values", async () => {
         userEvent.setup();
         renderResetPassword();
-        const submitButton = screen.getByRole("button", {name: "Submit"});
-        await userEvent.click(submitButton);
-        const newPasswordError = await screen.findByText("Please enter the password");
+        await userEvent.click(screen.getByRole("button", {name: "Submit"}));
+        const newPasswordError = await screen.findByText("Please enter password");
         expect(newPasswordError).toBeInTheDocument();
         const confirmPasswordError = await screen.findByText("Please enter confirm password");
         expect(confirmPasswordError).toBeInTheDocument();
@@ -48,7 +54,7 @@ describe("ResetPassword", () => {
     test("render new password length error if less than 8", async () => {
         userEvent.setup();
         renderResetPassword();
-        const newPasswordInput = screen.getByPlaceholderText("Enter new password");
+        const newPasswordInput = screen.getByPlaceholderText("Create New Password");
         await userEvent.type(newPasswordInput, "siva1@");
         const submitButton = screen.getByRole("button", {name: "Submit"});
         await userEvent.click(submitButton);
@@ -59,7 +65,7 @@ describe("ResetPassword", () => {
     test("renders include atleast one digit & special character error", async () => {
         userEvent.setup();
         renderResetPassword();
-        const newPasswordInput = screen.getByPlaceholderText("Enter new password");
+        const newPasswordInput = screen.getByPlaceholderText("Create New Password");
         await userEvent.type(newPasswordInput, "sivakrishna");
         const submitButton = screen.getByRole("button", {name: "Submit"});
         await userEvent.click(submitButton);
@@ -70,9 +76,9 @@ describe("ResetPassword", () => {
     test("renders password doesn't match error", async () => {
         userEvent.setup();
         renderResetPassword();
-        const newPasswordInput = screen.getByPlaceholderText("Enter new password");
+        const newPasswordInput = screen.getByPlaceholderText("Create New Password");
         await userEvent.type(newPasswordInput, "sivakrishna1!");
-        const confirmPasswordInput = screen.getByPlaceholderText("Re enter new password");
+        const confirmPasswordInput = screen.getByPlaceholderText("Confirm New Password");
         await userEvent.type(confirmPasswordInput, "sivakrishna1@");
         const submitButton = screen.getByRole("button", {name: "Submit"});
         await userEvent.click(submitButton);
