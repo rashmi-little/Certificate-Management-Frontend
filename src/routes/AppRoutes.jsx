@@ -1,51 +1,25 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import ProtectedLayout from "./ProtectedLayout";
-import Dashboard from "../pages/Dashboard";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getUserFromToken } from "../redux/login/Action";
-import Login from "../pages/Login";
-import ForgotPassword from "../pages/ForgotPassword";
-import ResetPassword from "../pages/ResetPassword";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import "../index.css"
 
 const AppRoutes = () => {
-  const dispatch = useDispatch();
-  const [token, setToken] = useState(localStorage.getItem("token"))
-
-  useEffect(()=>{
-    const handleStorageChange = () => {
-      setToken(localStorage.getItem("token"));
-    }
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  },[])
-
-  useEffect(() => {
-      if (token) {
-        dispatch(getUserFromToken());
-      }
-    }, [token])
 
   return (
     <div>
-      <Routes>
-        {/* Redirect "/" based on login status */}
-        <Route
-          path="/"
-          element={<Navigate to={ (token) ? "/dashboard" : "/login"} />}
-        />
+      <div>
+        <Navbar />
+        <div className="flex">
+          <Sidebar />
+          <div className="flex-1 rounded-tl-3xl border-t-[1px] border-l-[1px] p-6 gap-8 bg-[#FAFAFA]
+            dashboard-body
+          ">
+            <Outlet />
+          </div>
+        </div>
 
-        {/* Public Routes*/}
-        <Route path="/login" element={<Login />} />
-        <Route path="/login/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword/>} />
+      </div>
 
-        {/* Admin Routes */}
-        <Route element={<ProtectedLayout/>}>
-            <Route path="/dashboard" element={<Dashboard/>} />
-        </Route>
-      </Routes>
     </div>
   );
 };
