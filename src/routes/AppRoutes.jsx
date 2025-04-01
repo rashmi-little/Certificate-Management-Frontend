@@ -1,11 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedLayout from "./ProtectedLayout";
-import SignIn from "../pages/sign-in/SignIn";
 import Dashboard from "../pages/Dashboard";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getUserFromToken } from "../redux/login/Action";
-import ResetPassword from "../pages/sign-in/components/ResetPassword";
+import Login from "../pages/Login";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,8 @@ const AppRoutes = () => {
         />
 
         {/* Public Routes*/}
-        <Route path="/login" element={<SignIn />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/login/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword/>} />
 
         {/* Admin Routes */}
