@@ -1,4 +1,4 @@
-import mindfirelogo from "../assets/mindfirelogo.webp"
+import mindfirelogo from "../assets/Dashboard/mindfirelogo.svg"
 
 const Logo = () => {
     return (

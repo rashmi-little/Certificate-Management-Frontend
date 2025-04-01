@@ -33,11 +33,11 @@ import { PASSWORD_RESET } from "../constants/Constants";
 const Login = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset, watch } = useForm({ mode: "onBlur" });
-    const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [backDropOpen, setBackDropOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.login?.user);
     const token = useSelector(state => state.login?.token);
@@ -69,13 +69,13 @@ const Login = () => {
     }, [error])
 
     useEffect(() => {
-        if (token) {
+        if (token && !user) {
             dispatch(getUserFromToken());
         }
     }, [token])
 
     useEffect(() => {
-        if (user && token) {
+        if (user) {
             reset({
                 email: "",
                 password: "",
@@ -221,9 +221,6 @@ const Login = () => {
                                             message: "Password cannot contain spaces",
                                         }
                                     })}
-                                    required
-                                    fullWidth
-                                    variant="outlined"
                                     slotProps={{
                                         input: {
                                             endAdornment: (
@@ -242,6 +239,9 @@ const Login = () => {
                                             )
                                         }
                                     }}
+                                    required
+                                    fullWidth
+                                    variant="outlined"
                                 />
                                 <div className={`flex flex-col md:flex-row md:justify-between`}>
 
