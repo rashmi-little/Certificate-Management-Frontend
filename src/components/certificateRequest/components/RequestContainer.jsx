@@ -1,9 +1,10 @@
 import React from "react";
 import RequestContainerBody from "./RequestContainerBody";
+import RequestFooter from './RequestFooter';
 
 const RequestContainer = () => {
   return (
-    <div className="flex flex-col items-start p-6 gap-6 w-[1184px] h-[880px] bg-[#FAFAFA] shadow-inner rounded-tl-3xl">
+    <div className="flex flex-col items-start gap-6 w-[1184px] h-[880px]">
       <div className="flex flex-col items-start p-4 gap-4 w-[1136px] h-[158px] bg-white shadow-lg rounded-lg">
         <h1 className="text-xl font-semibold">Generate New Request</h1>
         <div className="flex flex-col items-start p-0 gap-3 w-[1104px] h-[74px] rounded-lg filter drop-shadow-lg">
@@ -43,6 +44,7 @@ const RequestContainer = () => {
         </div>
       </div>
       <RequestContainerBody />
+      <RequestFooter />
     </div>
   );
 };
