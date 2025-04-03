@@ -1,51 +1,121 @@
-import React from "react";
-import RequestContainerBody from "./RequestContainerBody";
-import RequestFooter from './RequestFooter';
+import React, { useEffect, useState } from "react";
+import RequestSelectTemplate from "./RequestSelectTemplate";
+import RequestContainerFooter from "./RequestContainerFooter";
+import CustomStepper from "./CustomStepper";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategories } from "../../../redux/certificate/Action";
 
 const RequestContainer = () => {
+  const [selectCategoryDropDownOpen, setSelectCategoryDropDownOpen] =
+    useState(false);
+
+  const [selectCategory, setSelectCategory] = useState("Select Category");
+
+  const [stepperCurrentStep, setStepperCurrentStep] = useState(0);
+
+  const dispatch = useDispatch();
+
+  const categories = useSelector((store) => store.certificate?.categories);
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, []);
+
+  const [templates, setTemplates] = useState([
+    {
+      id: 1,
+      templateName: "Achievement Certificate",
+      isActive: false,
+    },
+    {
+      id: 2,
+      templateName: "Training Completion Certificate",
+      isActive: false,
+    },
+    {
+      id: 3,
+      templateName: "Outstanding Performance Award",
+      isActive: false,
+    },
+    {
+      id: 4,
+      templateName: "Employee of the Month",
+      isActive: false,
+    },
+    {
+      id: 5,
+      templateName: "CTC Letter",
+      isActive: false,
+    },
+    {
+      id: 6,
+      templateName: "Employment Confirmation Letter",
+      isActive: false,
+    },
+    {
+      id: 7,
+      templateName: "Monthly Recognition Award",
+      isActive: false,
+    },
+    {
+      id: 8,
+      templateName: "Rising Star Award",
+      isActive: false,
+    },
+    {
+      id: 9,
+      templateName: "Attendance Star Award",
+      isActive: false,
+    },
+    {
+      id: 10,
+      templateName: "Random Template",
+      isActive: false,
+    },
+  ]);
+
+  function handleSelectCategoryToggle() {
+    setSelectCategoryDropDownOpen((prevState) => !prevState);
+  }
+
+  function handleSelectCategoryChange(selectedCategory) {
+    setSelectCategory(() => selectedCategory.name);
+
+    handleSelectCategoryToggle();
+  }
+
+  function resetTemplates() {
+    setTemplates((prevTemplates) =>
+      prevTemplates.map((template) => {
+        return { ...template, isActive: false };
+      })
+    );
+  }
+
   return (
-    <div className="flex flex-col items-start gap-6 w-[1184px] h-[880px]">
-      <div className="flex flex-col items-start p-4 gap-4 w-[1136px] h-[158px] bg-white shadow-lg rounded-lg">
+    <section className="grid grid-rows-[minmax(158px,_15%)_1fr_minmax(60px,_9%)] h-[calc(100vh-128px)] gap-6">
+      <header className="flex flex-col items-start p-4 gap-4 bg-white shadow-lg rounded-lg">
         <h1 className="text-xl font-semibold">Generate New Request</h1>
-        <div className="flex flex-col items-start p-0 gap-3 w-[1104px] h-[74px] rounded-lg filter drop-shadow-lg">
-          <div className="flex flex-col items-start px-20 pb-8 gap-2 w-[1104px] h-[74px]">
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex flex-col items-center p-0 gap-2">
-                  <div className="w-[42px] h-[42px] flex items-center justify-center rounded-full bg-[#FAFAFA] border-2 border-blue-500 text-blue-500 text-[20px] leading-[26px] font-normal shadow-inner">
-                    <span
-                      className="color-primary-300 font-roboto text-base leading-6 tracking-normal"
-                    >
-                      1
-                    </span>
-                  </div>
-                  <div className="after:content-[attr(after)] absolute after:flex bottom-0 after:font-roboto after:font-medium after:text-center after:text-[16px] after:leading-[24px] after:tracking-0 after:text-neutral-800" after="Select Template" ></div>
-                </div>
-
-                <div className="h-[2px] flex-1 bg-neutral-300"></div>
-
-                <div className="flex flex-col items-center p-0 gap-2">
-                  <div className="w-[42px] h-[42px] flex items-center justify-center rounded-full bg-[#FAFAFA] border-2 border-[#DEE0E3] text-[#394555] text-[20px] leading-[26px] font-normal shadow-inner">
-                    2
-                  </div>
-                  <div className="after:content-[attr(after)] absolute after:flex bottom-0 after:font-roboto after:font-medium after:text-center after:text-[16px] after:leading-[24px] after:tracking-0 after:text-neutral-800" after="Add Recipients" ></div>
-                </div>
-                <div className="h-[2px] flex-1 bg-neutral-300"></div>
-
-                <div className="flex flex-col items-center p-0 gap-2">
-                  <div className="w-[42px] h-[42px] flex items-center justify-center rounded-full bg-[#FAFAFA] border-2 border-[#DEE0E3] text-[#394555] text-[20px] leading-[26px] font-normal shadow-inner">
-                    3
-                  </div>
-                  <div className="after:content-[attr(after)] absolute after:flex bottom-0 after:font-roboto after:font-medium after:text-center after:text-[16px] after:leading-[24px] after:tracking-0 after:text-neutral-800" after="Schedule" ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <RequestContainerBody />
-      <RequestFooter />
-    </div>
+        <CustomStepper
+          stepperCurrentStep={stepperCurrentStep}
+          setStepperCurrentStep={setStepperCurrentStep}
+        />
+      </header>
+      <RequestSelectTemplate
+        handleSelectCategoryToggle={handleSelectCategoryToggle}
+        selectCategoryDropDownOpen={selectCategoryDropDownOpen}
+        selectCategory={selectCategory}
+        categories={categories}
+        handleSelectCategoryChange={handleSelectCategoryChange}
+        templates={templates}
+        setTemplates={setTemplates}
+      />
+      <RequestContainerFooter
+        setSelectCategory={setSelectCategory}
+        setSelectCategoryDropDownOpen={setSelectCategoryDropDownOpen}
+        resetTemplates={resetTemplates}
+      />
+    </section>
   );
 };
 
