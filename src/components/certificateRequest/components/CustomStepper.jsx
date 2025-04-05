@@ -1,6 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const CustomStepper = ({ stepperCurrentStep, setStepperCurrentStep }) => {
+const CustomStepper = () => {
+  const stepperCurrentStep = useSelector(
+    (store) => store.certificate?.stepperValue
+  );
   return (
     <div className="flex flex-col items-start p-0 gap-3 w-[100%] rounded-lg filter drop-shadow-lg">
       <div className="flex flex-col items-start px-20 pb-8 gap-2 w-[100%]">

@@ -1,16 +1,14 @@
 import React from "react";
 import dummyTemplate from "../../../assets/vector/certificate-dummy-template.png";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ACTIVE_FOOTER_SUBMIT,
+  INACTIVE_FOOTER_SUBMIT,
+} from "../../../redux/certificate/ActionType";
 
-const CertificateTemplate = ({ template, setTemplates }) => {
-  function handleTemplateClick(templateId) {
-    setTemplates((prevTemplates) =>
-      prevTemplates.map((template) =>
-        template.id === templateId
-          ? { ...template, isActive: !template.isActive }
-          : { ...template, isActive: false }
-      )
-    );
-  }
+const CertificateTemplate = ({ template, handleTemplateClick }) => {
+
+
   const basicStyling =
     "border border-[#DEE0E3] bg-[#FAFAFA] p-2 rounded-2xl relative h-[33vh] aspect-[1.38] w-full";
   const activeStyling =
@@ -23,6 +21,7 @@ const CertificateTemplate = ({ template, setTemplates }) => {
     >
       <div className="bg-red-300 h-full rounded-2xl">
         <img src={dummyTemplate} alt="" className="w-full h-full rounded-2xl" />
+        {/* <img src="https://picsum.photos/id/237/200/300" alt="" className="w-full h-full rounded-2xl" /> */}
       </div>
       <div className="flex justify-between absolute w-[92%] left-[20px] top-[20px]">
         {template.isActive ? (
@@ -59,7 +58,7 @@ const CertificateTemplate = ({ template, setTemplates }) => {
           </svg>
         )}
 
-        <div className="w-8 h-8 rounded-full border border-[#5A6472] flex items-center justify-center bg-[#FAFAFA]">
+        <div className="w-8 h-8 rounded-full border border-[#004DC0] flex items-center justify-center bg-[#FAFAFA]">
           <svg
             width="25"
             height="25"

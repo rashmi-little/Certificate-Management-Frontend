@@ -1,4 +1,12 @@
-import { FETCH_ALL_CATEGORIES } from "./ActionType";
+import {
+  ACTIVE_FOOTER_SUBMIT,
+  DECREASE_STEPPER_COUNT,
+  FETCH_ALL_CATEGORIES,
+  INACTIVE_FOOTER_SUBMIT,
+  PROCESS_SUBMIT_CLICK,
+  RESET_ALL_TEMPLATES,
+  SET_ALL_TEMPLATES,
+} from "./ActionType";
 import {
   FETCH_STATISTICS_REQUEST,
   FETCH_STATISTICS_SUCCESS,
@@ -16,6 +24,9 @@ const initialState = {
   scheduleRequestLoading: false,
   scheduleRequestError: null,
   categories: [],
+  stepperValue: 0,
+  footerSubmitStatus: false,
+  templates: null,
 };
 
 export const certificateReducer = (state = initialState, { type, payload }) => {
@@ -44,6 +55,41 @@ export const certificateReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         categories: payload,
+      };
+    case ACTIVE_FOOTER_SUBMIT:
+      return {
+        ...state,
+        footerSubmitStatus: true,
+      };
+
+    case INACTIVE_FOOTER_SUBMIT:
+      return {
+        ...state,
+        footerSubmitStatus: false,
+      };
+
+    case PROCESS_SUBMIT_CLICK:
+      return {
+        ...state,
+        stepperValue: payload + 1,
+        footerSubmitStatus: false,
+      };
+
+    case DECREASE_STEPPER_COUNT:
+      return {
+        ...state,
+        stepperValue: payload - 1,
+      };
+
+    case RESET_ALL_TEMPLATES:
+      return {
+        ...state,
+        templates: null,
+      };
+    case SET_ALL_TEMPLATES:
+      return {
+        ...state,
+        templates: payload,
       };
     default:
       return state;

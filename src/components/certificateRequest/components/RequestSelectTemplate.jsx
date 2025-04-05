@@ -3,6 +3,7 @@ import CategoryDropDownBox from "./CategoryDropDownBox";
 import DropDownMenu from "./DropDownMenu";
 import CertificateTemplate from "./CertificateTemplate";
 import DownloadDropDownBox from "./DownloadDropDownBox";
+import MiniHeading from "./MiniHeading";
 
 const RequestSelectTemplate = ({
   handleSelectCategoryToggle,
@@ -11,17 +12,15 @@ const RequestSelectTemplate = ({
   categories,
   handleSelectCategoryChange,
   templates,
-  setTemplates,
+  handleTemplateClick,
 }) => {
   return (
     <main className="flex flex-col items-start p-4 gap-4 isolation-auto bg-white shadow-[6px_6px_12px_rgba(0,_0,_0,_0.06)] rounded-lg overflow-y-scroll">
       <div className="flex flex-col md:flex-row items-center p-0 gap-2.5 w-[100%] flex-none order-0 self-stretch flex-grow-0 justify-between relative">
-        <p className="font-roboto font-medium text-[20px] md:text-[16px] lg:text-[20px] leading-[100%] tracking-normal text-[#394555]">
-          Select Certificate Template
-        </p>
+        <MiniHeading title="Select Certificate Template" />
 
         <div className="flex flex-col md:flex-row gap-[10px]">
-          <DownloadDropDownBox />
+          {selectCategory !== "Select Category" && <DownloadDropDownBox />}
           <CategoryDropDownBox
             handleSelectCategoryToggle={handleSelectCategoryToggle}
             selectCategory={selectCategory}
@@ -50,7 +49,7 @@ const RequestSelectTemplate = ({
               <CertificateTemplate
                 key={index}
                 template={template}
-                setTemplates={setTemplates}
+                handleTemplateClick={handleTemplateClick}
               />
             ))}
         </div>
