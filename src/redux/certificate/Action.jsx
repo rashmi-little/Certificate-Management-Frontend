@@ -8,6 +8,19 @@ import {
   FETCH_SCHEDULE_FAILURE,
 } from "./ActionType";
 
+/**
+ * Fetches certificate request statistics for the current user based on the provided date range.
+ *
+ * This action creator:
+ * - Dispatches FETCH_STATISTICS_REQUEST before initiating the API call.
+ * - Calls the endpoint `/api/v1/certificate-service/user/statistics` with `startDate` and `endDate` as query parameters.
+ * - On success, dispatches FETCH_STATISTICS_SUCCESS with the response data as payload.
+ * - On failure, dispatches FETCH_STATISTICS_FAILURE with an error message as payload.
+ *
+ * @param {string} startDate - The start date for the statistics range (format: YYYY-MM-DD).
+ * @param {string} endDate - The end date for the statistics range (format: YYYY-MM-DD).
+ * @returns {Function} A Redux thunk function.
+ */
 export const getCertificateStatistics =
   (startDate, endDate) => async (dispatch) => {
     dispatch({ type: FETCH_STATISTICS_REQUEST });
@@ -31,6 +44,17 @@ export const getCertificateStatistics =
     }
   };
 
+/**
+ * Fetches scheduled certificate request information for the current user.
+ *
+ * This action creator:
+ * - Dispatches FETCH_SCHEDULE_REQUEST before initiating the API call.
+ * - Calls the endpoint `/api/v1/certificate-service/user/getScheduleRequestInfo`.
+ * - On success, dispatches FETCH_SCHEDULE_SUCCESS with the response data as payload.
+ * - On failure, dispatches FETCH_SCHEDULE_FAILURE with an error message as payload.
+ *
+ * @returns {Function} A Redux thunk function.
+ */
 export const getScheduleRequestInfo = () => async (dispatch) => {
   dispatch({ type: FETCH_SCHEDULE_REQUEST });
   try {
