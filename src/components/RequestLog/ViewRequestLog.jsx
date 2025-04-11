@@ -20,8 +20,11 @@ import {
   editCertificateRecipient,
 } from "../../redux/certificateRecipient/action";
 import EditRecipientModal from "./EditRecipientModal";
+import { TemplateModal } from "./TemplateModal";
 
 const ViewRequestLog = () => {
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [templateUrlToShow, setTemplateUrlToShow] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
@@ -51,6 +54,8 @@ const ViewRequestLog = () => {
     (state) => state.requestView
   );
 
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
   const handleEditRecipient = (recipient) => {
     if (status === "Scheduled") {
       setSelectedRecipientForEdit(recipient);
@@ -114,12 +119,29 @@ const ViewRequestLog = () => {
     }
   }, [requestView?.requestTitle]);
 
+  const handleSaveRecipientUpdate = (updatedRecipient) => {
+    setCertificateId(updatedRecipient.certificateId);
+    dispatch(
+      editCertificateRecipient(
+        updatedRecipient.certificateId,
+        JSON.parse(updatedRecipient.certificateData)
+      )
+    )
+      .then(() => {
+        dispatch(fetchRequestView(id));
+        setShowRecipientUpdateSuccessModal(true);
+      })
+      .catch((error) => {
+        console.log("Error updating recipient:", error);
+      })
+      .finally(() => {
+        setIsEditRecipientModalOpen(false);
+      });
+  };
+
   const handleBackClick = () => {
     navigate(-1);
   };
-
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const menuRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -174,12 +196,15 @@ const ViewRequestLog = () => {
       setIsModalOpen(true);
     }
   };
-
+  const handleViewTemplateClick = () => {
+    setTemplateUrlToShow(requestView?.templateURL);
+    setIsTemplateModalOpen(true);
+  };
   return (
     <>
       <div className="flex gap-8 flex-col ">
         <RequestViewHeader onBackClick={handleBackClick} />
-        <div className="flex flex-row items-start gap-6  h-full flex-grow ">
+        <div className="flex lg:flex-row items-start gap-6  h-full flex-grow  sm:flex-col md:flex-col max-sm:flex-col">
           <div
             className={`flex flex-col items-start p-6 gap-6 w-full bg-white shadow-[4px_4px_8px_rgba(0,0,0,0.08)] max-h-[604px] overflow-y-auto rounded-[16px] flex-grow transition-all duration-300 ${
               showSaveModal ? "blur-md pointer-events-none" : ""
@@ -188,8 +213,8 @@ const ViewRequestLog = () => {
             {" "}
             <div className="flex flex-row items-center gap-4 w-full h-auto">
               <div className="w-full flex flex-row items-center gap-4 flex-none order-0 self-stretch">
-                <div className="w-[401px] h-[20px] font-roboto font-medium text-[20px] leading-[20px] text-[#394555] flex-none order-0 flex-grow">
-                  <span className="w-[401px] h-[20px] font-roboto font-medium text-[20px] leading-[20px] text-[#394555] flex-none order-0 flex-grow">
+                <div className=" h-[20px] font-roboto font-medium text-[20px] leading-[20px] text-[#394555]  flex-grow">
+                  <span className=" h-[20px] font-roboto font-medium text-[20px] leading-[20px] text-[#394555]">
                     Request Details
                   </span>
                 </div>
@@ -270,7 +295,10 @@ const ViewRequestLog = () => {
                     {requestView?.templateName}
                   </span>
 
-                  <span className="w-[106px] h-[16px] font-roboto font-medium text-[16px] leading-[16px] text-[#0066FF] text-center">
+                  <span
+                    className="w-[106px] h-[16px] font-roboto font-medium text-[16px] leading-[16px] text-[#0066FF] text-center cursor-pointer"
+                    onClick={handleViewTemplateClick}
+                  >
                     View Template
                   </span>
                 </div>
@@ -363,36 +391,21 @@ const ViewRequestLog = () => {
         isDeleting={deleteLoading}
       />
       {isEditRecipientModalOpen && selectedRecipientForEdit && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <EditRecipientModal
-            open={isEditRecipientModalOpen}
-            onClose={() => setIsEditRecipientModalOpen(false)}
-            recipient={selectedRecipientForEdit}
-            onSave={(updatedRecipient) => {
-              setCertificateId(updatedRecipient.certificateId);
-              dispatch(
-                editCertificateRecipient(
-                  updatedRecipient.certificateId,
-                  JSON.parse(updatedRecipient.certificateData)
-                )
-              );
-              setShowRecipientUpdateSuccessModal(true)
-                .then(() => {
-                  setShowSaveModal(true);
-                  dispatch(fetchRequestView(id));
-                })
-                .catch((error) => {
-                  console.log(error);
-                })
-                .finally(() => {
-                  setIsEditRecipientModalOpen(false);
-                });
-            }}
-          />
-        </div>
+        <EditRecipientModal
+          open={isEditRecipientModalOpen}
+          onClose={() => setIsEditRecipientModalOpen(false)}
+          recipient={selectedRecipientForEdit}
+          onSave={handleSaveRecipientUpdate}
+        />
       )}
 
       <InvalidStatusModel open={isModalOpen} setOpenModal={setIsModalOpen} />
+
+      <TemplateModal
+        open={isTemplateModalOpen}
+        onClose={() => setIsTemplateModalOpen(false)}
+        templateUrl={templateUrlToShow}
+      />
     </>
   );
 };

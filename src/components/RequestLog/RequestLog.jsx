@@ -155,8 +155,11 @@ const RequestLog = () => {
   useEffect(() => {
     if (requests) {
       setAllRequest((prev) => {
-        const updatedRequest = [...prev, ...requests];
-        return updatedRequest;
+        const existingIds = new Set(prev.map((r) => r.requestId));
+        const newRequests = requests.filter(
+          (r) => !existingIds.has(r.requestId)
+        );
+        return [...prev, ...newRequests];
       });
     }
   }, [requests]);
@@ -558,13 +561,19 @@ const RequestLog = () => {
 
         <div className="flex flex-col items-start p-2 gap-4  h-auto bg-white shadow-lg rounded-xl z-1  ">
           <div className="overflow-y-auto h-[600px] w-full" ref={tableref}>
-            <DataTable
-              columns={columns}
-              data={allRequest}
-              customStyles={customStyles}
-              pagination={false}
-              noDataComponent={""}
-            />
+            {allRequest.length === 0 ? (
+              <div className="flex justify-center items-center h-full text-gray-500 text-sm">
+                No records available
+              </div>
+            ) : (
+              <DataTable
+                columns={columns}
+                data={allRequest}
+                customStyles={customStyles}
+                pagination={false}
+                noDataComponent={""}
+              />
+            )}
           </div>
         </div>
       </div>
