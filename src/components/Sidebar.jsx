@@ -67,7 +67,7 @@ const Sidebar = ({setPathname}) => {
         <div className="sidebar w-[256px] min-h-[calc(100vh-80px)] ">
             {items.map((item) =>
                 <div onClick={() => handleActive(item.label)}
-                className={`w-[224px] h-[56px] rounded-lg  p-4 flex items-center gap-4 border-l-[5px] 
+                className={`w-[224px] h-[56px] rounded-lg  p-4 flex items-center gap-4 border-l-[5px]
                  ${isActive === item.label ? " border-l-[#0066FF] bg-[#C0D9FF] text-[#0066FF]" : "cursor-pointer border-l-transparent"}
                 `}>
                     <img className="h-6 w-6"

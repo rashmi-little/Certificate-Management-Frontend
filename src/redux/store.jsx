@@ -9,6 +9,7 @@ import {
 } from "./requestLog/Reducer";
 import certificateRecipientReducer from "./certificateRecipient/Reducer";
 import editRecipientReducer from "./certificateRecipient/editRecipientReducer";
+import { certificateReducer } from "./certificate/Reducer";
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     updateRequest: updateRequestReducer,
     certificateRecipient: certificateRecipientReducer,
     updateRecipient:editRecipientReducer
+    certificate: certificateReducer,
   },
 });

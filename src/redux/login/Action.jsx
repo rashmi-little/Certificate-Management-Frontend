@@ -92,6 +92,7 @@ export const sendPasswordResetLink = (reqData) => async (dispatch) => {
  *  @param reqData New password to be set and the valid token
  */
 export const resetPassword = (reqData) => async (dispatch) => {
+
   try {
     const { data } = await api.post(
       "/api/v1/user-service/reset-password",
