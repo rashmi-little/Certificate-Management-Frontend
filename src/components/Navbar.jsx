@@ -2,12 +2,15 @@ import mindfirelogo from "../assets/Dashboard/mindfirelogo.svg"
 import profile from "../assets/Dashboard/profile.png"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "../components/Navbar.css"
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
-    <div className="navbar flex justify-between items-center px-6">
+    <div className="navbar w-full flex justify-between items-center px-6">
        
-        <div className="w-[256px] h-[80px] flex justify-between items-center">
+        <div onClick={() => navigate("/")}
+        className="w-[256px] h-[80px] flex justify-between items-center cursor-pointer">
             <img className="w-[120px] h-[47px]"
             src={mindfirelogo} alt="Mindfire logo" />
         </div>

@@ -2,7 +2,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import yes from "../assets/yes.png"
+import yes from "../../assets/yes.png"
 import { Button } from '@mui/material';
 
 const style = {
@@ -10,13 +10,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 391,
+    width: 360,
     height: 273,
     bgcolor: 'background.paper',
     border: "none",
 };
 
-export default function EmailSentModal({ open, setOpenModal }) {
+export default function UserAddedSuccessModal({ open, setOpenModal }) {
     const handleClose = () => setOpenModal(false);
 
     return (
@@ -50,8 +50,8 @@ export default function EmailSentModal({ open, setOpenModal }) {
                         </div>
 
                         <div className='h-[69px] flex flex-col gap-2 text-center'>
-                            <h1 className='font-semibold text-xl font-roboto text-[#394555]'>Email Sent</h1>
-                            <p className='text-[#757D8A] text-base font-normal font-roboto'>The password reset link is shared to your entered email ID.</p>
+                            <h1 className='font-semibold text-xl font-roboto text-[#394555]'>User Added!</h1>
+                            <p className='text-[#757D8A] text-base font-normal font-roboto'>New user data is saved and added to the system.</p>
                         </div>
 
                         <div className='flex w-full font-medium text-xl text-[#0066FF]'>
@@ -70,7 +70,7 @@ export default function EmailSentModal({ open, setOpenModal }) {
                                 }}
                                 disableRipple
                             >
-                                Okay
+                                Done
                             </Button>
                         </div>
                     </Box>

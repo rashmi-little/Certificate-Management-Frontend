@@ -6,20 +6,17 @@ import "../index.css"
 const AppRoutes = () => {
 
   return (
-    <div>
-      <div>
+    <div className="min-h-screen w-screen">
         <Navbar />
-        <div className="flex">
+        <div className=" flex min-h-[calc(100vh-80px)] w-full">
           <Sidebar />
-          <div className="flex-1 rounded-tl-3xl border-t-[1px] border-l-[1px] p-6 gap-8 bg-[#FAFAFA]
+          {/* flex-1 w-[calc(100vw-248px)]*/}
+          <div className="flex-1 min-h-full rounded-tl-3xl border-t-[1px] border-l-[1px] p-6 gap-8 bg-[#FAFAFA]
             dashboard-body
           ">
             <Outlet />
           </div>
         </div>
-
-      </div>
-
     </div>
   );
 };
