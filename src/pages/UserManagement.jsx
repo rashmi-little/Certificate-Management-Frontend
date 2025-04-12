@@ -252,7 +252,7 @@ const UserManagement = () => {
         if ((tabRef.current === TABS.ADMINS && sortingRef.current.isEnabled.Admins) ||
           (tabRef.current === TABS.USERS && sortingRef.current.isEnabled.Recipients) ||
           (tabRef.current === TABS.LOCKED && sortingRef.current.isEnabled.Locked)) {
-
+          let loading;
           if (tabRef.current === TABS.ADMINS) {
             loading = admins?.loading;
           }
