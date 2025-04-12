@@ -32,12 +32,6 @@ function App() {
         >
           <Route index path="dashboard" element={<Dashboard />} />
           <Route path="request" element={<div>Requests Page</div>} />
-          <Route path="logs" element={<div>Logs Page</div>}>
-            <Route
-              path="view-request/:id"
-              element={<div>ViewRequestLog </div>}
-            />
-          </Route>
           <Route path="logs" element={<RequestLog />} />
           <Route path="certificates" element={<div>Certificates Page</div>} />
           <Route path="users" element={<div>Users Page</div>} />

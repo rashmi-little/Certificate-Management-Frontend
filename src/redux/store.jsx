@@ -20,7 +20,7 @@ export const store = configureStore({
     requestView: requestViewReducer,
     updateRequest: updateRequestReducer,
     certificateRecipient: certificateRecipientReducer,
-    updateRecipient:editRecipientReducer
+    updateRecipient:editRecipientReducer,
     certificate: certificateReducer,
   },
 });
