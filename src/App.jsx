@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import RequestLog from "./components/RequestLog/RequestLog";
+import ViewRequestLog from "./components/RequestLog/ViewRequestLog";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,15 +32,11 @@ function App() {
         >
           <Route index path="dashboard" element={<Dashboard />} />
           <Route path="request" element={<div>Requests Page</div>} />
-          <Route path="logs" element={<div>Logs Page</div>}>
-            <Route
-              path="view-request/:id"
-              element={<div>ViewRequestLog </div>}
-            />
-          </Route>
+          <Route path="logs" element={<RequestLog />} />
           <Route path="certificates" element={<div>Certificates Page</div>} />
           <Route path="users" element={<div>Users Page</div>} />
           <Route path="tickets" element={<div>Tickets Page</div>} />
+          <Route path="logs/view-request/:id" element={<ViewRequestLog />} />
         </Route>
       </Routes>
     </>

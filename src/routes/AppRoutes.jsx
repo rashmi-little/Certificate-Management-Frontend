@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import "../index.css";
+import "../index.css"
 
 const AppRoutes = () => {
+
   return (
     <div className=" w-full">
       <Navbar />
