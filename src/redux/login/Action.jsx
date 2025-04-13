@@ -1,6 +1,6 @@
 import { api } from "../../config/config";
+import { USERSERVICE_BASE_URL } from "../../constants/Constants";
 import {
-  CLEAR_LOGIN_ERROR,
   CLEAR_PASSWORD_RESET,
   GET_USER_FROM_TOKEN_FAILURE,
   GET_USER_FROM_TOKEN_REQUEST,
@@ -10,7 +10,6 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   PASSWORD_RESET_FAILURE,
-  PASSWORD_RESET_LINK_SENT_CLEAR,
   PASSWORD_RESET_LINK_SENT_FAILURE,
   PASSWORD_RESET_LINK_SENT_SUCCESS,
   PASSWORD_RESET_SUCCESS,
@@ -35,7 +34,7 @@ export const login = (reqData) => async (dispatch) => {
     dispatch({ type: LOGIN_SUCCESS, payload: data });
     console.log("LoggedIn Successfull ", data);
   } catch (error) {
-    dispatch({ type: LOGIN_FAILURE, payload: error.response?.data?.detail });
+    dispatch({ type: LOGIN_FAILURE, payload: error});
     console.error("Error while logging in ", error);
   }
 };
@@ -49,9 +48,7 @@ export const login = (reqData) => async (dispatch) => {
 export const getUserFromToken = () => async (dispatch) => {
   dispatch({ type: GET_USER_FROM_TOKEN_REQUEST });
   try {
-    const { data } = await api.get(
-      "backend/api/v1/user-service/user/user-data/profile"
-    );
+    const { data } = await api.get(`/${USERSERVICE_BASE_URL}/user/user-data/profile`);
     if (data.role) {
       localStorage.setItem("role", data.role);
     }
@@ -61,6 +58,7 @@ export const getUserFromToken = () => async (dispatch) => {
   } catch (error) {
     dispatch({ type: GET_USER_FROM_TOKEN_FAILURE, payload: error.message });
     console.error("Error while fetching user from token ", error);
+    console.error("Error message getting set in tokenError:  ", error.message);
   }
 };
 
@@ -70,9 +68,7 @@ export const getUserFromToken = () => async (dispatch) => {
  */
 export const sendPasswordResetLink = (reqData) => async (dispatch) => {
   try {
-    const { data } = await api.post(
-      `/api/v1/user-service/reset-token?email=${reqData.email}`
-    );
+    const { data } = await api.post(`/${USERSERVICE_BASE_URL}/reset-token?email=${reqData.email}`);
     const payload = {
       passwordResetLinkSent: true,
     };
@@ -94,10 +90,7 @@ export const sendPasswordResetLink = (reqData) => async (dispatch) => {
 export const resetPassword = (reqData) => async (dispatch) => {
 
   try {
-    const { data } = await api.post(
-      "/api/v1/user-service/reset-password",
-      reqData
-    );
+    const {data} = await api.post(`${USERSERVICE_BASE_URL}/reset-password`, reqData);
     const payload = {
       passwordReset: true,
     };

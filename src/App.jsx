@@ -7,18 +7,29 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import UserManagement from "./pages/UserManagement";
+import Profile from "./pages/Profile";
+import Loader from "./components/Loader";
 import RequestLog from "./components/RequestLog/RequestLog";
 import ViewRequestLog from "./components/RequestLog/ViewRequestLog";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((store) => store?.login?.user);
+  const user = useSelector(store => store?.login?.user);
+  const tokenError = useSelector(store => store?.login?.tokenError);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(getUserFromToken());
     }
-  }, []);
+  }, [])
+  
+  if(!localStorage.getItem("token") || tokenError) {
+    return <Login/>
+  }
+  else if(!user) {
+   return <Loader/>
+  }
 
   return (
     <>
@@ -26,15 +37,15 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/login/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route
-          path="/"
-          element={user ? <AppRoutes /> : <Navigate to="/login" />}
-        >
+        <Route path="/" element={<AppRoutes />} >
+          <Route index element={<Navigate to="/dashboard" />} />
+          <Route path="dashboard" element={<Dashboard/>} />
           <Route index path="dashboard" element={<Dashboard />} />
           <Route path="request" element={<div>Requests Page</div>} />
           <Route path="logs" element={<RequestLog />} />
           <Route path="certificates" element={<div>Certificates Page</div>} />
-          <Route path="users" element={<div>Users Page</div>} />
+          <Route path="users" element={<UserManagement/>} />
+          <Route path="profile/:userId" element={<Profile/>} />
           <Route path="tickets" element={<div>Tickets Page</div>} />
           <Route path="logs/view-request/:id" element={<ViewRequestLog />} />
         </Route>

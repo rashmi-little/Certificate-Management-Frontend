@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
 @import "tailwindcss";
+
 @theme {
     --font-roboto: Roboto
 }
+
+/* Figure out the cursor changing from pointer, when menu opens */
+/* body {
+    pointer-events: auto !important;
+}   */
 
 @media (max-width: 600px) {
     

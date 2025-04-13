@@ -11,8 +11,8 @@ import UserManagement from "../assets/Dashboard/UserManagement.svg"
 import S_UserManagement from "../assets/Dashboard/S_UserManagement.svg"
 import TicketRequests from "../assets/Dashboard/TicketRequests.svg"
 import S_TicketRequests from "../assets/Dashboard/S_TicketRequests.svg"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const Sidebar = ({setPathname}) => {
     const items = [
@@ -56,18 +56,45 @@ const Sidebar = ({setPathname}) => {
     paths.set("User Management", "/users");
     paths.set("Ticket Requests", "/tickets");
     const navigate = useNavigate();
-    const [isActive, setIsActive] = useState("Dashboard");
+    const [isActive, setIsActive] = useState();
+    const location = useLocation();
+    const pathname = location.pathname;
+
+    const setActiveSidebarTab = () => {
+        if(pathname === "/" || pathname === "/dashboard") {
+            setIsActive("Dashboard");
+        }
+        else if (pathname === "/request") {
+            setIsActive("New Request");
+        }
+        else if (pathname === "/logs") {
+            setIsActive("Request Log");
+        }
+        else if (pathname === "/certificates") {
+            setIsActive("Certificates");
+        }
+        else if (pathname === "/users") {
+            setIsActive("User Management");
+        }
+        else if (pathname === "/tickets") {
+            setIsActive("Ticket Requests")
+        }
+    }
+
+    useEffect(()=>{
+        setActiveSidebarTab();
+    },[pathname])
 
     const handleActive = (label) => {
         setIsActive(label);
         navigate(paths.get(label));
     }
-
+    
     return (
-        <div className="sidebar w-[256px] min-h-[calc(100vh-80px)] ">
-            {items.map((item) =>
-                <div onClick={() => handleActive(item.label)}
-                className={`w-[224px] h-[56px] rounded-lg  p-4 flex items-center gap-4 border-l-[5px]
+        <div className="sidebar w-[256px]  h-full">
+            {items.map((item, index) =>
+                <div key={index} onClick={() => handleActive(item.label)}
+                className={`w-[224px] h-[56px] rounded-lg  p-4 flex items-center gap-4 border-l-[5px] 
                  ${isActive === item.label ? " border-l-[#0066FF] bg-[#C0D9FF] text-[#0066FF]" : "cursor-pointer border-l-transparent"}
                 `}>
                     <img className="h-6 w-6"
