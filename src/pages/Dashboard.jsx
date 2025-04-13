@@ -1,10 +1,12 @@
-const Dashboard = () => {
-  
-  return (
-    <div>
-        Dashboard
-    </div>
-  )
-}
+import React from "react";
+import DashboardBody from "../components/DashboardBody";
 
-export default Dashboard
+const Dashboard = () => {
+  return (
+    <div className="h-full w-full">
+      <DashboardBody></DashboardBody>
+    </div>
+  );
+};
+
+export default Dashboard;

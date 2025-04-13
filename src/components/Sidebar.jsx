@@ -89,7 +89,7 @@ const Sidebar = ({setPathname}) => {
         setIsActive(label);
         navigate(paths.get(label));
     }
-// min-h-[calc(100vh-80px)]
+    
     return (
         <div className="sidebar w-[256px]  h-full">
             {items.map((item, index) =>

@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom"
-import AppRoutes from "./routes/AppRoutes"
+import { Navigate, Route, Routes } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserFromToken } from "./redux/login/Action";
@@ -10,9 +10,10 @@ import Dashboard from "./pages/Dashboard";
 import UserManagement from "./pages/UserManagement";
 import Profile from "./pages/Profile";
 import Loader from "./components/Loader";
+import RequestLog from "./components/RequestLog/RequestLog";
+import ViewRequestLog from "./components/RequestLog/ViewRequestLog";
 
 function App() {
-
   const dispatch = useDispatch();
   const user = useSelector(store => store?.login?.user);
   const tokenError = useSelector(store => store?.login?.tokenError);
@@ -23,7 +24,6 @@ function App() {
     }
   }, [])
   
-  // if(!localStorage.getItem("token") || (tokenError & !user)) {
   if(!localStorage.getItem("token") || tokenError) {
     return <Login/>
   }
@@ -33,7 +33,6 @@ function App() {
 
   return (
     <>
-
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/login/forgot-password" element={<ForgotPassword />} />
@@ -41,17 +40,18 @@ function App() {
         <Route path="/" element={<AppRoutes />} >
           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard/>} />
+          <Route index path="dashboard" element={<Dashboard />} />
           <Route path="request" element={<div>Requests Page</div>} />
-          <Route path="logs" element={<div>Logs Page</div>} />
+          <Route path="logs" element={<RequestLog />} />
           <Route path="certificates" element={<div>Certificates Page</div>} />
           <Route path="users" element={<UserManagement/>} />
           <Route path="profile/:userId" element={<Profile/>} />
           <Route path="tickets" element={<div>Tickets Page</div>} />
+          <Route path="logs/view-request/:id" element={<ViewRequestLog />} />
         </Route>
       </Routes>
-
     </>
-  )
+  );
 }
 
-export default App
+export default App;

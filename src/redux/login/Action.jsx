@@ -1,7 +1,6 @@
 import { api } from "../../config/config";
 import { USERSERVICE_BASE_URL } from "../../constants/Constants";
 import {
-  CLEAR_LOGIN_ERROR,
   CLEAR_PASSWORD_RESET,
   GET_USER_FROM_TOKEN_FAILURE,
   GET_USER_FROM_TOKEN_REQUEST,
@@ -11,7 +10,6 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   PASSWORD_RESET_FAILURE,
-  PASSWORD_RESET_LINK_SENT_CLEAR,
   PASSWORD_RESET_LINK_SENT_FAILURE,
   PASSWORD_RESET_LINK_SENT_SUCCESS,
   PASSWORD_RESET_SUCCESS,
@@ -29,7 +27,7 @@ import {
 export const login = (reqData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
   try {
-    const { data } = await api.post("/backend/api/v1/login", reqData.data);
+    const { data } = await api.post("backend/api/v1/login", reqData.data);
     if (data) {
       localStorage.setItem("token", data);
     }
@@ -72,15 +70,18 @@ export const sendPasswordResetLink = (reqData) => async (dispatch) => {
   try {
     const { data } = await api.post(`/${USERSERVICE_BASE_URL}/reset-token?email=${reqData.email}`);
     const payload = {
-      passwordResetLinkSent: true
+      passwordResetLinkSent: true,
     };
     dispatch({ type: PASSWORD_RESET_LINK_SENT_SUCCESS, payload: payload });
     console.log("Password reset link sent successfully", data);
   } catch (error) {
-    dispatch({ type: PASSWORD_RESET_LINK_SENT_FAILURE, payload: error?.response?.data?.detail });
+    dispatch({
+      type: PASSWORD_RESET_LINK_SENT_FAILURE,
+      payload: error?.response?.data?.detail,
+    });
     console.error("Error while sending password reset link", error);
   }
-}
+};
 
 /**
  *  Handles resetting the password
@@ -96,16 +97,18 @@ export const resetPassword = (reqData) => async (dispatch) => {
     dispatch({ type: PASSWORD_RESET_SUCCESS, payload: payload });
     console.log("Password reset successfully", data);
   } catch (error) {
-    dispatch({ type: PASSWORD_RESET_FAILURE, payload: error.response.data.detail });
+    dispatch({
+      type: PASSWORD_RESET_FAILURE,
+      payload: error.response.data.detail,
+    });
     console.error("Error while password reset ", error);
-  }
-  finally {
+  } finally {
     // Clear the state to handle the state change
     setTimeout(() => {
-      dispatch({ type: CLEAR_PASSWORD_RESET })
+      dispatch({ type: CLEAR_PASSWORD_RESET });
     }, 3000);
   }
-}
+};
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("token");
@@ -116,4 +119,4 @@ export const logout = () => (dispatch) => {
   } catch (error) {
     console.error("Error while logging out ", error);
   }
-}
+};
