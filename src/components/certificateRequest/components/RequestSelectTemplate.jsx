@@ -19,7 +19,9 @@ const RequestSelectTemplate = ({
   const selectedCategory = useSelector(
     (store) => store.certificate?.selectedCategory
   );
-
+  
+  const activeTemplate = templates.find(template => template.isActive);
+  
   const dispatch = useDispatch();
 
    useEffect(() => {
@@ -28,7 +30,7 @@ const RequestSelectTemplate = ({
           getAllTemplatesByCategory(selectedCategory.certificateCategoryId)
         );
   
-        dispatch({ type: SET_SELECTED_TEMPLATE, payload: null });
+        // dispatch({ type: SET_SELECTED_TEMPLATE, payload: null });
       }
     }, [selectedCategory]);
 
@@ -38,7 +40,7 @@ const RequestSelectTemplate = ({
         <MiniHeading title="Select Certificate Template" />
 
         <div className="flex flex-col md:flex-row gap-[10px]">
-          {selectedCategory !== null && <DownloadDropDownBox />}
+          {(selectedCategory !== null && activeTemplate) && <DownloadDropDownBox template={activeTemplate}/>}
           <CategoryDropDownBox
             handleSelectCategoryToggle={handleSelectCategoryToggle}
             selectedCategory={selectedCategory}

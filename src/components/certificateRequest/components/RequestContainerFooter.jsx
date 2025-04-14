@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   PROCESS_SUBMIT_CLICK,
+  RESET_RECIPIENT,
   SET_SELECTED_TEMPLATE,
 } from "../../../redux/certificate/ActionType";
 import { store } from "../../../redux/store";
@@ -9,6 +10,7 @@ import { store } from "../../../redux/store";
 const RequestContainerFooter = ({ handleDoItLaterClick }) => {
   const dispatch = useDispatch();
   const stepperValue = useSelector((store) => store.certificate?.stepperValue);
+  const selectedTemplate = useSelector((store) => store.certificate?.selectedTemplate);
   const isSubmitActive = useSelector(
     (store) => store.certificate?.footerSubmitStatus
   );
@@ -24,6 +26,13 @@ const RequestContainerFooter = ({ handleDoItLaterClick }) => {
   function handleSubmitClick() {
     if (isSubmitActive && stepperValue < 3) {
       const activeTemplate = templates.find((template) => template.isActive);
+
+      if(selectedTemplate && activeTemplate.templateId !== selectedTemplate.templateId) {
+        dispatch({
+          type: RESET_RECIPIENT,
+          payload: []
+        });
+      }
       dispatch({
         type: SET_SELECTED_TEMPLATE,
         payload: activeTemplate,

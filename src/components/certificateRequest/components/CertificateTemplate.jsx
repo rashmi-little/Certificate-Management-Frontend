@@ -7,11 +7,17 @@ import {
 } from "../../../redux/certificate/ActionType";
 
 const CertificateTemplate = ({ template, handleTemplateClick }) => {
-  const selectedTemplate = useSelector((store) => store.certificate?.selectedTemplate);
+  const selectedTemplate = useSelector(
+    (store) => store.certificate?.selectedTemplate
+  );
   const basicStyling =
     "border border-[#DEE0E3] bg-[#FAFAFA] p-2 rounded-2xl relative h-[33vh] aspect-[1.38] w-full";
   const activeStyling =
     "border border-[#408DFF] bg-[#0066FF]/[0.1] p-2 rounded-2xl relative h-[33vh] aspect-[1.38] w-full";
+
+  // if (selectedTemplate && template.templateId === selectedTemplate.templateId) {
+  //   template.isActive = true;
+  // }
   return (
     <div
       className={template.isActive ? activeStyling : basicStyling}

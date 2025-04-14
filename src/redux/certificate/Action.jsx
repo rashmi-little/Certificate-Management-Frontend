@@ -86,8 +86,10 @@ export const getTemplateStructure = (templateId) => async (dispatch) => {
     );
     console.log(data);
     dispatch({ type: FETCH_CURRENT_TEMPLATE_STRUCTURE, payload: data });
+    return data;
   } catch (error) {
     console.error("Error while fetching category ", error);
+    return null;
   }
 };
 

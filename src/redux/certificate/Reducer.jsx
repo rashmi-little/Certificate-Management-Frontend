@@ -9,6 +9,7 @@ import {
   PROCESS_SUBMIT_CLICK,
   REMOVE_RECIPIENT,
   RESET_ALL_TEMPLATES,
+  RESET_RECIPIENT,
   RESET_STATE,
   SET_ALL_TEMPLATES,
   SET_CURRENT_SELECTED_RECIPIENT,
@@ -140,6 +141,12 @@ export const certificateReducer = (state = initialState, { type, payload }) => {
         selectedRecipients: state.selectedRecipients.filter(
           (recipient) => recipient !== payload
         ),
+      };
+
+    case RESET_RECIPIENT: 
+      return {
+        ...state,
+        selectedRecipients: payload
       };
 
     case SET_SELECTED_OPEN_MENU_ID:
