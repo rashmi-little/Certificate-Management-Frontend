@@ -10,22 +10,14 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    height: 309,
+    width: 391,
+    height: 273,
     bgcolor: 'background.paper',
     border: "none",
-    //   boxShadow: 24,
-    p: 4,
 };
 
 export default function EmailSentModal({ open, setOpenModal }) {
     const handleClose = () => setOpenModal(false);
-    
-
-    const handleOpenMailBox = () => {
-        window.open("https://mail.google.com/", "_blank")
-        handleClose();
-    }
 
     return (
         <div>
@@ -46,49 +38,39 @@ export default function EmailSentModal({ open, setOpenModal }) {
                         ...style,
                         display: "flex",
                         flexDirection: "column",
-                        gap: 2,
-                        borderRadius: 4,
+                        alignItems: "center",
+                        gap: 3,
+                        borderRadius: "16px",
+                        padding:3,
                         outline: 0,
                     }}>
                         <div>
-                            <img className='h-[40px] w-[40px]'
+                            <img className='h-[60px] w-[60px]'
                                 src={yes} alt="Tick Mark Image" />
                         </div>
 
-                        <div className='space-y-1'>
-                            <h1 className='font-bold text-xl'>Email Sent</h1>
-                            <p className='text-[#535862]'>The password reset link is shared to your entered email ID.</p>
+                        <div className='h-[69px] flex flex-col gap-2 text-center'>
+                            <h1 className='font-semibold text-xl font-roboto text-[#394555]'>Email Sent</h1>
+                            <p className='text-[#757D8A] text-base font-normal font-roboto'>The password reset link is shared to your entered email ID.</p>
                         </div>
 
-                        <div className='flex flex-col gap-4'>
-                            <Button type="submit" fullWidth variant="contained"
-                                onClick={handleOpenMailBox}
-                                sx={{
-                                    borderRadius: "10px",
-                                    textTransform: "none",
-                                    backgroundColor: "#0066ff",
-                                    "$:hover": {
-                                        backgroundColor: "#0066ff"
-                                    }
-                                }}
-                                disableRipple
-                            >
-                                Open Mail Box
-                            </Button>
+                        <div className='flex w-full font-medium text-xl text-[#0066FF]'>
 
-                            <Button type="submit" fullWidth variant="outlined"
+                            <Button 
+                            type="submit" 
+                            fullWidth 
+                            variant="outlined"
                                 onClick={handleClose}
                                 sx={{
-                                    borderRadius: "10px",
+                                    height:48,
+                                    borderRadius: "12px",
                                     textTransform: "none",
-                                    backgroundColor: "",
-                                    "$:hover": {
-                                        backgroundColor: "transparent"
-                                    }
+                                    border: "1px solid #0066FF",
+                                    fontSize: "20px"
                                 }}
                                 disableRipple
                             >
-                                Close
+                                Okay
                             </Button>
                         </div>
                     </Box>
