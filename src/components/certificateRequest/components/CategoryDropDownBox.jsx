@@ -5,7 +5,7 @@ import upwardArrow from "../../../assets/vector/upwardArrow.png";
 const DropDownBox = ({
   handleSelectCategoryToggle,
   selectCategoryDropDownOpen,
-  selectCategory
+  selectedCategory,
 }) => {
   return (
     <div
@@ -13,7 +13,7 @@ const DropDownBox = ({
       onClick={handleSelectCategoryToggle}
     >
       <div className="font-roboto font-normal text-[18px] leading-[16px] text-[#5A6472] flex-none order-0 flex-grow-0 text-nowrap">
-        {selectCategory}
+        {selectedCategory === null ? "Select Category" : selectedCategory.name}
       </div>
       <div className="flex-none order-1 flex-grow-0">
         <img

@@ -7,8 +7,7 @@ import {
 } from "../../../redux/certificate/ActionType";
 
 const CertificateTemplate = ({ template, handleTemplateClick }) => {
-
-
+  const selectedTemplate = useSelector((store) => store.certificate?.selectedTemplate);
   const basicStyling =
     "border border-[#DEE0E3] bg-[#FAFAFA] p-2 rounded-2xl relative h-[33vh] aspect-[1.38] w-full";
   const activeStyling =
@@ -16,12 +15,16 @@ const CertificateTemplate = ({ template, handleTemplateClick }) => {
   return (
     <div
       className={template.isActive ? activeStyling : basicStyling}
+      // className={selectedTemplate.templateId === template.templateId ? activeStyling : basicStyling}
       data-templateid={template.id}
-      onClick={() => handleTemplateClick(template.id)}
+      onClick={() => handleTemplateClick(template.templateId)}
     >
-      <div className="bg-red-300 h-full rounded-2xl">
-        <img src={dummyTemplate} alt="" className="w-full h-full rounded-2xl" />
-        {/* <img src="https://picsum.photos/id/237/200/300" alt="" className="w-full h-full rounded-2xl" /> */}
+      <div className="h-full rounded-2xl">
+        <img
+          src={template.imageLink}
+          alt="template image"
+          className="w-full h-full rounded-2xl"
+        />
       </div>
       <div className="flex justify-between absolute w-[92%] left-[20px] top-[20px]">
         {template.isActive ? (

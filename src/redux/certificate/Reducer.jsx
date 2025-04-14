@@ -1,11 +1,20 @@
 import {
   ACTIVE_FOOTER_SUBMIT,
+  ADD_RECIPIENT,
   DECREASE_STEPPER_COUNT,
   FETCH_ALL_CATEGORIES,
+  FETCH_ALL_TEMPLATE_BY_CATEGORYID,
+  FETCH_CURRENT_TEMPLATE_STRUCTURE,
   INACTIVE_FOOTER_SUBMIT,
   PROCESS_SUBMIT_CLICK,
+  REMOVE_RECIPIENT,
   RESET_ALL_TEMPLATES,
+  RESET_STATE,
   SET_ALL_TEMPLATES,
+  SET_CURRENT_SELECTED_RECIPIENT,
+  SET_SELECTED_CATEGORY,
+  SET_SELECTED_OPEN_MENU_ID,
+  SET_SELECTED_TEMPLATE,
 } from "./ActionType";
 import {
   FETCH_STATISTICS_REQUEST,
@@ -26,7 +35,13 @@ const initialState = {
   categories: [],
   stepperValue: 0,
   footerSubmitStatus: false,
-  templates: null,
+  templates: [],
+  selectedTemplate: null,
+  selectedCategory: null,
+  currentTemplateStructure: null,
+  selectedRecipients: [],
+  selectedOpenMenuId: null,
+  currentSelectedRecipient: null,
 };
 
 export const certificateReducer = (state = initialState, { type, payload }) => {
@@ -84,13 +99,61 @@ export const certificateReducer = (state = initialState, { type, payload }) => {
     case RESET_ALL_TEMPLATES:
       return {
         ...state,
-        templates: null,
+        templates: [],
       };
     case SET_ALL_TEMPLATES:
       return {
         ...state,
         templates: payload,
       };
+
+    case FETCH_ALL_TEMPLATE_BY_CATEGORYID:
+      return {
+        ...state,
+        templates: payload,
+      };
+    case SET_SELECTED_CATEGORY:
+      return {
+        ...state,
+        selectedCategory: payload,
+      };
+    case SET_SELECTED_TEMPLATE:
+      return {
+        ...state,
+        selectedTemplate: payload,
+      };
+    case FETCH_CURRENT_TEMPLATE_STRUCTURE:
+      return {
+        ...state,
+        currentTemplateStructure: payload,
+      };
+
+    case ADD_RECIPIENT:
+      return {
+        ...state,
+        selectedRecipients: [...state.selectedRecipients, payload],
+      };
+
+    case REMOVE_RECIPIENT:
+      return {
+        ...state,
+        selectedRecipients: state.selectedRecipients.filter(
+          (recipient) => recipient !== payload
+        ),
+      };
+
+    case SET_SELECTED_OPEN_MENU_ID:
+      return {
+        ...state,
+        selectedOpenMenuId: payload,
+      };
+    case SET_CURRENT_SELECTED_RECIPIENT:
+      return {
+        ...state,
+        currentSelectedRecipient: payload,
+      };
+    case RESET_STATE:
+      return initialState;
     default:
       return state;
   }

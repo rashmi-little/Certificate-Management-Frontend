@@ -1,5 +1,10 @@
+import { useSelector } from "react-redux";
 import { api } from "../../config/certificateConfig";
-import { FETCH_ALL_CATEGORIES } from "./ActionType";
+import {
+  FETCH_ALL_CATEGORIES,
+  FETCH_ALL_TEMPLATE_BY_CATEGORYID,
+  FETCH_CURRENT_TEMPLATE_STRUCTURE,
+} from "./ActionType";
 import {
   FETCH_STATISTICS_FAILURE,
   FETCH_STATISTICS_REQUEST,
@@ -8,6 +13,7 @@ import {
   FETCH_SCHEDULE_SUCCESS,
   FETCH_SCHEDULE_FAILURE,
 } from "./ActionType";
+import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 
 const CERTIFICATE_SERVICE_PREFIX = "/certificate-service";
 
@@ -58,5 +64,43 @@ export const getAllCategories = () => async (dispatch) => {
     console.log(data);
   } catch (error) {
     console.error("Error while fetching category ", error);
+  }
+};
+
+export const getAllTemplatesByCategory = (categoryId) => async (dispatch) => {
+  try {
+    const { data } = await api.get(
+      `${CERTIFICATE_SERVICE_PREFIX}/api/v1/certificate-service/template?certificateCategoryId=${categoryId}`
+    );
+    dispatch({ type: FETCH_ALL_TEMPLATE_BY_CATEGORYID, payload: data });
+    console.log(data);
+  } catch (error) {
+    console.error("Error while fetching category ", error);
+  }
+};
+
+export const getTemplateStructure = (templateId) => async (dispatch) => {
+  try {
+    const { data } = await api.get(
+      `${CERTIFICATE_SERVICE_PREFIX}/api/v1/certificate-service/template/structure/${templateId}`
+    );
+    console.log(data);
+    dispatch({ type: FETCH_CURRENT_TEMPLATE_STRUCTURE, payload: data });
+  } catch (error) {
+    console.error("Error while fetching category ", error);
+  }
+};
+
+export const makeCertificateRequest = async (requestData) => {
+  try {
+    const response = await api.post(
+      `${CERTIFICATE_SERVICE_PREFIX}/api/v1/certificate-service/certificate-request`,
+      requestData
+    );
+    console.log("Request registered successfully:", response.data);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error while creating certificate request:", error);
+    return { success: false, error };
   }
 };
