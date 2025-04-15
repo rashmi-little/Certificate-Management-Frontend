@@ -11,9 +11,9 @@ const CertificateTemplate = ({ template, handleTemplateClick }) => {
     (store) => store.certificate?.selectedTemplate
   );
   const basicStyling =
-    "border border-[#DEE0E3] bg-[#FAFAFA] p-2 rounded-2xl relative h-[33vh] aspect-[1.38] w-full";
+    "border border-[#DEE0E3] bg-[#FAFAFA] p-2 rounded-2xl relative h-[258.31px] w-[357.33px] max-h-[33vh] max-w-[33vw] aspect-[1.38] w-full flex justify-center items-center";
   const activeStyling =
-    "border border-[#408DFF] bg-[#0066FF]/[0.1] p-2 rounded-2xl relative h-[33vh] aspect-[1.38] w-full";
+    "border border-[#408DFF] bg-[#0066FF]/[0.1] p-2 rounded-2xl relative h-[258.31px] w-[357.33px] max-h-[33vh] max-w-[33vw] aspect-[1.38] w-full flex justify-center items-center";
 
   // if (selectedTemplate && template.templateId === selectedTemplate.templateId) {
   //   template.isActive = true;
@@ -25,11 +25,11 @@ const CertificateTemplate = ({ template, handleTemplateClick }) => {
       data-templateid={template.id}
       onClick={() => handleTemplateClick(template.templateId)}
     >
-      <div className="h-full rounded-2xl">
+      <div className="h-full w-full rounded-2xl" style={{ aspectRatio: 1.38 }}>
         <img
           src={template.imageLink}
           alt="template image"
-          className="w-full h-full rounded-2xl"
+          className="h-full w-full rounded-2xl object-contain"
         />
       </div>
       <div className="flex justify-between absolute w-[92%] left-[20px] top-[20px]">

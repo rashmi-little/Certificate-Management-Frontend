@@ -116,8 +116,8 @@ const RequestContainer = () => {
 
   const gridLayout =
     currentStep < 2
-      ? "grid-rows-[minmax(158px,_15%)_1fr_minmax(60px,_9%)]"
-      : "grid-rows-[minmax(158px,_15%)_1fr]";
+      ? "grid-rows-[minmax(140px,_15%)_1fr_minmax(60px,_9%)]"
+      : "grid-rows-[minmax(140px,_15%)_1fr]";
 
   return (
     <section className={`grid ${gridLayout} h-[calc(100vh-128px)] gap-6 bg-[#FAFAFA]`}>

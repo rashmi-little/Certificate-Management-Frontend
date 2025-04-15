@@ -19,20 +19,20 @@ const RequestSelectTemplate = ({
   const selectedCategory = useSelector(
     (store) => store.certificate?.selectedCategory
   );
-  
-  const activeTemplate = templates.find(template => template.isActive);
-  
+
+  const activeTemplate = templates.find((template) => template.isActive);
+
   const dispatch = useDispatch();
 
-   useEffect(() => {
-      if (selectedCategory !== null) {
-        dispatch(
-          getAllTemplatesByCategory(selectedCategory.certificateCategoryId)
-        );
-  
-        // dispatch({ type: SET_SELECTED_TEMPLATE, payload: null });
-      }
-    }, [selectedCategory]);
+  useEffect(() => {
+    if (selectedCategory !== null) {
+      dispatch(
+        getAllTemplatesByCategory(selectedCategory.certificateCategoryId)
+      );
+
+      // dispatch({ type: SET_SELECTED_TEMPLATE, payload: null });
+    }
+  }, [selectedCategory]);
 
   return (
     <main className="flex flex-col items-start p-4 gap-4 isolation-auto bg-white shadow-[6px_6px_12px_rgba(0,_0,_0,_0.06)] rounded-lg overflow-y-scroll">
@@ -40,7 +40,9 @@ const RequestSelectTemplate = ({
         <MiniHeading title="Select Certificate Template" />
 
         <div className="flex flex-col md:flex-row gap-[10px]">
-          {(selectedCategory !== null && activeTemplate) && <DownloadDropDownBox template={activeTemplate}/>}
+          {selectedCategory !== null && activeTemplate && (
+            <DownloadDropDownBox template={activeTemplate} />
+          )}
           <CategoryDropDownBox
             handleSelectCategoryToggle={handleSelectCategoryToggle}
             selectedCategory={selectedCategory}
@@ -59,19 +61,20 @@ const RequestSelectTemplate = ({
       {selectedCategory === null || templates.length === 0 ? (
         <div className="flex flex-col justify-center items-center p-0 gap-4 flex-none order-1 self-stretch flex-grow">
           <p className="font-roboto text-[#394555] text-[14px]">
-            {selectedCategory === null ? "Please select a category to view the templates." : "Currently no template available"}
+            {selectedCategory === null
+              ? "Please select a category to view the templates."
+              : "Currently no template available"}
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full md:grid-cols-2">
-          {templates &&
-            templates.map((template, index) => (
-              <CertificateTemplate
-                key={index}
-                template={template}
-                handleTemplateClick={handleTemplateClick}
-              />
-            ))}
+        <div className="grid w-full grid-cols-[repeat(auto-fit,357.33px)] gap-4">
+          {templates?.map((template, index) => (
+            <CertificateTemplate
+              key={index}
+              template={template}
+              handleTemplateClick={handleTemplateClick}
+            />
+          ))}
         </div>
       )}
     </main>
@@ -79,3 +82,5 @@ const RequestSelectTemplate = ({
 };
 
 export default RequestSelectTemplate;
+
+// grid grid-cols-1 lg:grid-cols-3 gap-4 w-full md:grid-cols-2"
