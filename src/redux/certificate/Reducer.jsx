@@ -1,6 +1,7 @@
 import {
   ACTIVE_FOOTER_SUBMIT,
   ADD_RECIPIENT,
+  ADD_RECIPIENTS,
   DECREASE_STEPPER_COUNT,
   FETCH_ALL_CATEGORIES,
   FETCH_ALL_TEMPLATE_BY_CATEGORYID,
@@ -9,13 +10,22 @@ import {
   PROCESS_SUBMIT_CLICK,
   REMOVE_RECIPIENT,
   RESET_ALL_TEMPLATES,
+  RESET_PROGRESS_BAR,
   RESET_RECIPIENT,
   RESET_STATE,
   SET_ALL_TEMPLATES,
   SET_CURRENT_SELECTED_RECIPIENT,
+  SET_FILE_ANALYZING,
+  SET_FILE_PROCESSING_ERROR,
+  SET_FILE_PROCESSING_ERROR_MESSAGE,
+  SET_PROFILES_LIST,
+  SET_PROGRESS,
+  SET_REGISTER_REQUEST_ID,
   SET_SELECTED_CATEGORY,
   SET_SELECTED_OPEN_MENU_ID,
   SET_SELECTED_TEMPLATE,
+  SET_SHOW_DROP_ZONE,
+  SET_UPLOADED_FILE_NAME,
 } from "./ActionType";
 import {
   FETCH_STATISTICS_REQUEST,
@@ -43,6 +53,14 @@ const initialState = {
   selectedRecipients: [],
   selectedOpenMenuId: null,
   currentSelectedRecipient: null,
+  certificateRequestId: null,
+  uploadedFileName: "",
+  showDropZone: true,
+  progress: 0,
+  isFileAnalyzing: false,
+  isFileProcessingError: false,
+  fileProcessingErrorMessage: "",
+  userList: [],
 };
 
 export const certificateReducer = (state = initialState, { type, payload }) => {
@@ -134,6 +152,11 @@ export const certificateReducer = (state = initialState, { type, payload }) => {
         ...state,
         selectedRecipients: [...state.selectedRecipients, payload],
       };
+    case ADD_RECIPIENTS:
+      return {
+        ...state,
+        selectedRecipients: [...state.selectedRecipients, ...payload],
+      };
 
     case REMOVE_RECIPIENT:
       return {
@@ -143,10 +166,10 @@ export const certificateReducer = (state = initialState, { type, payload }) => {
         ),
       };
 
-    case RESET_RECIPIENT: 
+    case RESET_RECIPIENT:
       return {
         ...state,
-        selectedRecipients: payload
+        selectedRecipients: payload,
       };
 
     case SET_SELECTED_OPEN_MENU_ID:
@@ -159,6 +182,55 @@ export const certificateReducer = (state = initialState, { type, payload }) => {
         ...state,
         currentSelectedRecipient: payload,
       };
+
+    case SET_REGISTER_REQUEST_ID: {
+      return {
+        ...state,
+        certificateRequestId: payload,
+      };
+    }
+
+    case SET_UPLOADED_FILE_NAME:
+      return {
+        ...state,
+        uploadedFileName: payload,
+      };
+    case SET_SHOW_DROP_ZONE:
+      return {
+        ...state,
+        showDropZone: payload,
+      };
+
+    case SET_PROGRESS:
+      return {
+        ...state,
+        progress: payload,
+      };
+
+    case RESET_PROGRESS_BAR:
+      return {
+        ...state,
+        progress: 0,
+        showDropZone: true,
+        uploadedFileName: "",
+        isFileAnalyzing: false,
+        isFileProcessingError: false,
+        fileProcessingErrorMessage: "",
+      };
+
+    case SET_FILE_ANALYZING:
+      return { ...state, isFileAnalyzing: payload };
+
+    case SET_FILE_PROCESSING_ERROR:
+      return { ...state, isFileProcessingError: payload };
+
+    case SET_FILE_PROCESSING_ERROR_MESSAGE:
+      console.log("error payload is ", payload);
+
+      return { ...state, fileProcessingErrorMessage: payload };
+
+    case SET_PROFILES_LIST:
+      return { ...state, userList: payload };
     case RESET_STATE:
       return initialState;
     default:

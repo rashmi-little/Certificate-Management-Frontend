@@ -12,6 +12,9 @@ import {
 // import EditRecipientModal from "./EditRecipientModal";
 
 const RecipientsList = ({ setShowDeleteModal }) => {
+  const isFileAnalyzing = useSelector(
+    (store) => store?.certificate?.isFileAnalyzing
+  );
   const recipients = useSelector(
     (store) => store?.certificate?.selectedRecipients
   );
@@ -159,9 +162,29 @@ const RecipientsList = ({ setShowDeleteModal }) => {
           </div>
         ))
       ) : (
-        <p className="text-[#394555] text-[16px] font-roboto font-[400]">
-          No recipient added!
-        </p>
+        <div className="flex flex-col">
+          {isFileAnalyzing && (
+            <svg
+              className="w-8 h-8 animate-spin text-gray-500 self-center"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 4V8M24.485 7.515L21.6562 10.3438M28 16H24M24.485 24.485L21.6562 21.6562M16 28V24M7.515 24.485L10.3438 21.6562M4 16H8M7.515 7.515L10.3438 10.3438"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+          <p className="text-[#394555] text-[16px] font-roboto font-[400]">
+            {isFileAnalyzing
+              ? "File is being analyzed..."
+              : "No recipient added!"}
+          </p>
+        </div>
       )}
     </div>
   );

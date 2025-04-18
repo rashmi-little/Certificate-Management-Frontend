@@ -5,7 +5,7 @@ import Fade from "@mui/material/Fade";
 import yes from "../../../assets/yes.png";
 import { Button } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RESET_STATE } from "../../../redux/certificate/ActionType";
 
 const style = {
@@ -29,6 +29,10 @@ export default function RequestSuccessModal({
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const certificateRequestId = useSelector((store) => store.certificate?.certificateRequestId);
+  console.log(certificateRequestId);
+  
 
   return (
     <div>
@@ -106,6 +110,8 @@ export default function RequestSuccessModal({
                 variant="contained"
                 onClick={() => {
                   handleClose();
+                  dispatch({type : RESET_STATE});
+                  navigate(`/logs/view-request/${certificateRequestId}`)
                 }}
                 sx={{
                   height: 48,

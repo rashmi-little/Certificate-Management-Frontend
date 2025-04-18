@@ -1,10 +1,15 @@
 import { useSelector } from "react-redux";
 import { api } from "../../config/config";
-import { CERTIFICATE_SERVICE_COMMON_URL } from "../../constants/Constants";
+import {
+  CERTIFICATE_SERVICE_COMMON_URL,
+  USERSERVICE_BASE_URL,
+} from "../../constants/Constants";
 import {
   FETCH_ALL_CATEGORIES,
   FETCH_ALL_TEMPLATE_BY_CATEGORYID,
   FETCH_CURRENT_TEMPLATE_STRUCTURE,
+  SET_PROFILES_LIST,
+  SET_REGISTER_REQUEST_ID,
 } from "./ActionType";
 import {
   FETCH_STATISTICS_FAILURE,
@@ -15,7 +20,6 @@ import {
   FETCH_SCHEDULE_FAILURE,
 } from "./ActionType";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
-
 
 /**
  * Fetches certificate request statistics for the current user based on the provided date range.
@@ -117,16 +121,29 @@ export const getTemplateStructure = (templateId) => async (dispatch) => {
   }
 };
 
-export const makeCertificateRequest = async (requestData) => {
+export const makeCertificateRequest = (requestData) => async (dispatch) => {
   try {
-    const response = await api.post(
+    const { data } = await api.post(
       `${CERTIFICATE_SERVICE_COMMON_URL}/certificate-request`,
       requestData
     );
-    console.log("Request registered successfully:", response.data);
-    return { success: true, data: response.data };
+    console.log("Request registered successfully:", data);
+    dispatch({ type: SET_REGISTER_REQUEST_ID, payload: data });
+    return { success: true, data: data };
   } catch (error) {
     console.error("Error while creating certificate request:", error);
     return { success: false, error };
+  }
+};
+
+export const getAllProfiles = () => async (dispatch) => {
+  try {
+    const { data } = await api.get(
+      `${USERSERVICE_BASE_URL}/user/user-data/profiles`
+    );
+    dispatch({ type: SET_PROFILES_LIST, payload: data });
+    console.log(data);
+  } catch (error) {
+    console.error("Error while fetching profiles ", error);
   }
 };

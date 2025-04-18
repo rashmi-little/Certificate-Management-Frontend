@@ -7,7 +7,7 @@ const CustomStepper = () => {
   );
   return (
     <div className="flex flex-col items-start p-0 gap-3 w-[100%] rounded-lg filter drop-shadow-lg">
-      <div className="flex flex-col items-start px-20 pb-8 gap-2 w-[100%]">
+      <div className="flex flex-col items-start px-15 sm:px-10 md:px-20 pb-8 gap-2 w-full">
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-center p-0 gap-2">
             <div

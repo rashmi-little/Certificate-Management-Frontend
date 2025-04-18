@@ -47,6 +47,8 @@ const RequestContainer = () => {
 
   // for fetching categories
   useEffect(() => {
+    console.log("Yes the use effect called and the length of category is ", categories.length);
+    
     if (categories.length === 0) {
       dispatch(getAllCategories());
     }
@@ -120,7 +122,9 @@ const RequestContainer = () => {
       : "grid-rows-[minmax(140px,_15%)_1fr]";
 
   return (
-    <section className={`grid ${gridLayout} h-[calc(100vh-128px)] gap-6 bg-[#FAFAFA]`}>
+    <section
+      className={`grid ${gridLayout} gap-6 bg-[#FAFAFA] h-[calc(100vh-128px)] overflow-y-auto`}
+    >
       <header className="flex flex-col items-start p-4 gap-4 bg-white shadow-lg rounded-lg">
         <h1 className="text-xl font-semibold">Generate New Request</h1>
         <CustomStepper />
@@ -139,7 +143,7 @@ const RequestContainer = () => {
       ) : (
         <RequestScheduleContainer />
       )}
-      {currentStep < 2 ? (
+      {currentStep < 3 ? (
         <RequestContainerFooter handleDoItLaterClick={handleDoItLater} />
       ) : (
         ""
@@ -149,3 +153,5 @@ const RequestContainer = () => {
 };
 
 export default RequestContainer;
+
+//className={`grid ${gridLayout} h-[calc(100vh-128px)] gap-6 bg-[#FAFAFA]`}

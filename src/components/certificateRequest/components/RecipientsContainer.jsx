@@ -17,8 +17,19 @@ const RecipientsContainer = () => {
     dispatch(getTemplateStructure(selectedTemplate.templateId));
   }, []);
 
+  // grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-x-hidden overflow-y-hidden
+
   return (
-    <section className="grid grid-cols-2 gap-6 overflow-x-hidden">
+    <section
+      className="
+    grid grid-cols-1 lg:grid-cols-2 
+    gap-6 
+    overflow-x-hidden 
+    lg:overflow-y-hidden 
+    overflow-y-auto 
+    h-full
+  "
+    >
       <UploadRecipientDetails />
       <Recipients />
     </section>

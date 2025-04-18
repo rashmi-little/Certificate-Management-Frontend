@@ -20,7 +20,7 @@ const Recipients = () => {
     setShowDeleteModal(false);
   }
   return (
-    <div className="rounded-[16px] flex flex-col gap-4 p-4 shadow-[6px_6px_12px_rgba(0,0,0,0.06)] bg-[#FFFFFF] overflow-y-auto">
+    <div className="rounded-[16px] flex flex-col gap-4 p-4 shadow-[6px_6px_12px_rgba(0,0,0,0.06)] bg-[#FFFFFF] overflow-y-auto max-w-full overflow-x-hidden">
       <div>
         <MiniHeading title={"Recipients"} />
       </div>

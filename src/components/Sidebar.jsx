@@ -91,7 +91,7 @@ const Sidebar = ({setPathname}) => {
     }
     
     return (
-        <div className="sidebar w-[256px]  h-full">
+        <div className="sidebar w-[256px]  h-full md:block hidden ">
             {items.map((item, index) =>
                 <div key={index} onClick={() => handleActive(item.label)}
                 className={`w-[224px] h-[56px] rounded-lg  p-4 flex items-center gap-4 border-l-[5px] 

@@ -5,11 +5,12 @@ import dayjs from "dayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DECREASE_STEPPER_COUNT } from "../../../redux/certificate/ActionType";
+import { DECREASE_STEPPER_COUNT, RESET_STATE } from "../../../redux/certificate/ActionType";
 import { useDispatch, useSelector } from "react-redux";
 import RequestSuccessModal from "./RequestSuccessModal";
-import { makeCertificateRequest } from "../../../redux/certificate/Action";
+import { getAllCategories, makeCertificateRequest } from "../../../redux/certificate/Action";
 import ErrorModal from "./ErrorModal";
+import { template } from "lodash";
 
 const ScheduleContainer = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -36,7 +37,8 @@ const ScheduleContainer = () => {
   };
 
   function handleScheduleCancel() {
-    dispatch({ type: DECREASE_STEPPER_COUNT, payload: currentStep });
+    dispatch({type : RESET_STATE});
+    dispatch(getAllCategories());
   }
 
   async function handleScheduleRequestClick() {
@@ -46,7 +48,7 @@ const ScheduleContainer = () => {
 
     console.log(requestData);
 
-    const result = await makeCertificateRequest(requestData);
+    const result = await dispatch(makeCertificateRequest(requestData));
     if (result.success) {
       setShowSaveModal(true);
     } else {
@@ -61,7 +63,7 @@ const ScheduleContainer = () => {
 
     console.log(requestData);
 
-    const result = await makeCertificateRequest(requestData);
+    const result = await dispatch(makeCertificateRequest(requestData));
     if (result.success) {
       setShowSaveModal(true);
     } else {
@@ -71,12 +73,15 @@ const ScheduleContainer = () => {
 
   function generateRequestPayload(generationType) {
     const backendDateTimeString = selectedDate.format("YYYY-MM-DD");
+    const tempString = selectedDate.format("MMMM - YYYY");
+    
+    const requestTitle = `${selectedTemplate.templateName} - ${tempString}`;
     const requestData = {
       templateId: selectedTemplate.templateId,
       generationType: generationType,
       scheduledDate: backendDateTimeString,
       recipientsInfo: JSON.stringify(selectedRecipients),
-      requestTitle: "first certificate - april",
+      requestTitle: requestTitle,
     };
 
     return requestData;
