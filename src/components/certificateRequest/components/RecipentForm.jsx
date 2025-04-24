@@ -115,7 +115,7 @@ const RecipentForm = ({ fieldsConfig }) => {
           throw new Error("Invalid Excel format: Headers do not match.");
         }
 
-        const jsonData = XLSX.utils.sheet_to_json(dataSheet, { defval: "" });
+        const jsonData = XLSX.utils.sheet_to_json(dataSheet, { defval: "", raw: false });
 
         dispatch({ type: ADD_RECIPIENTS, payload: jsonData });
         dispatch({ type: SET_PROGRESS, payload: 100 });

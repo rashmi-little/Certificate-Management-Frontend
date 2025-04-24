@@ -47,8 +47,11 @@ const RequestContainer = () => {
 
   // for fetching categories
   useEffect(() => {
-    console.log("Yes the use effect called and the length of category is ", categories.length);
-    
+    console.log(
+      "Yes the use effect called and the length of category is ",
+      categories.length
+    );
+
     if (categories.length === 0) {
       dispatch(getAllCategories());
     }
@@ -86,8 +89,11 @@ const RequestContainer = () => {
       resetTemplates();
     } else if (currentStep > 0) {
       dispatch({ type: DECREASE_STEPPER_COUNT, payload: currentStep });
+      console.log("The templte that is selected is ", selectedTemplate);
 
       if (selectedTemplate) {
+        console.log("active footer submit should be called");
+
         dispatch({ type: ACTIVE_FOOTER_SUBMIT });
       }
     }
@@ -107,19 +113,18 @@ const RequestContainer = () => {
       (template) => template.isActive
     );
 
-    if (isAnyTemplateActive && footerSubmitStatus === false) {
-      console.log(isAnyTemplateActive, "yes");
+    if (currentStep == 0) {
+      if (isAnyTemplateActive && footerSubmitStatus === false) {
+        console.log(isAnyTemplateActive, "yes");
 
-      dispatch({ type: ACTIVE_FOOTER_SUBMIT });
-    } else if (footerSubmitStatus && !isAnyTemplateActive) {
-      dispatch({ type: INACTIVE_FOOTER_SUBMIT });
+        dispatch({ type: ACTIVE_FOOTER_SUBMIT });
+      } else if (footerSubmitStatus && !isAnyTemplateActive) {
+        dispatch({ type: INACTIVE_FOOTER_SUBMIT });
+      }
     }
   }, [templates]);
 
-  const gridLayout =
-    currentStep < 2
-      ? "grid-rows-[minmax(140px,_15%)_1fr_minmax(60px,_9%)]"
-      : "grid-rows-[minmax(140px,_15%)_1fr]";
+  const gridLayout = "grid-rows-[minmax(140px,_15%)_1fr_minmax(60px,_9%)]";
 
   return (
     <section

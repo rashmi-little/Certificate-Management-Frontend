@@ -20,7 +20,7 @@ const FileUploadProgressBar = ({
         <div className="flex gap-2 items-center">
           {/* Success Check Icon */}
           {progress === 100 && !isFileProcessingError && (
-            <div className="rounded-full bg-green-600 p-[2px]">
+            <div className="rounded-full bg-green-600 p-[2px]" data-testid="success-icon">
               <svg
                 width="24"
                 height="24"
@@ -62,6 +62,7 @@ const FileUploadProgressBar = ({
               strokeWidth="2.66667"
               strokeLinecap="round"
               strokeLinejoin="round"
+              data-testid="cancel-icon-path"
             />
           </svg>
         </button>

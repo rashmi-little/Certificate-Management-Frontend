@@ -27,7 +27,7 @@ const RecipientsList = ({ setShowDeleteModal }) => {
   );
 
   useEffect(() => {
-    if (recipients.length > 0) {
+    if (recipients?.length > 0) {
       dispatch({ type: ACTIVE_FOOTER_SUBMIT });
     } else {
       dispatch({ type: INACTIVE_FOOTER_SUBMIT });
@@ -74,7 +74,7 @@ const RecipientsList = ({ setShowDeleteModal }) => {
   };
 
   const emptyStyling = "flex justify-center items-center h-full";
-  const recipientsLength = recipients.length;
+  const recipientsLength = recipients?.length;
 
   return (
     // <div className="flex flex-col items-start p-6 gap-6 h-full bg-white bg-opacity-65 shadow-[4px_4px_8px_rgba(0,0,0,0.08)] rounded-[16px] flex-grow">

@@ -100,7 +100,12 @@ export const getAllTemplatesByCategory = (categoryId) => async (dispatch) => {
     const { data } = await api.get(
       `${CERTIFICATE_SERVICE_COMMON_URL}/template?certificateCategoryId=${categoryId}`
     );
-    dispatch({ type: FETCH_ALL_TEMPLATE_BY_CATEGORYID, payload: data });
+
+    const templatesWithIsActive = data.map((template) => ({
+      ...template,
+      isActive: false,
+    }));
+    dispatch({ type: FETCH_ALL_TEMPLATE_BY_CATEGORYID, payload: templatesWithIsActive });
     console.log(data);
   } catch (error) {
     console.error("Error while fetching category ", error);

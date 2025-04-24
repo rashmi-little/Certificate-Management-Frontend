@@ -1,10 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import downwardArrow from "../../../assets/vector/downwardArrow.png";
-import { useDispatch, useSelector } from "react-redux";
-import { getTemplateStructure } from "../../../redux/certificate/Action";
-import * as XLSX from "xlsx";
+
 const DownloadDropDownBox = ({ template }) => {
-  const dispatch = useDispatch();
   const linkRef = useRef();
 
   async function handleDownloadClick() {

@@ -22,6 +22,7 @@ const CertificateTemplate = ({ template, handleTemplateClick }) => {
     <div
       className={template.isActive ? activeStyling : basicStyling}
       // className={selectedTemplate.templateId === template.templateId ? activeStyling : basicStyling}
+      data-testid="template-container"
       data-templateid={template.id}
       onClick={() => handleTemplateClick(template.templateId)}
     >
@@ -35,6 +36,7 @@ const CertificateTemplate = ({ template, handleTemplateClick }) => {
       <div className="flex justify-between absolute w-[92%] left-[20px] top-[20px]">
         {template.isActive ? (
           <svg
+          data-testid="active-checkmark"
             width="33"
             height="32"
             viewBox="0 0 33 32"
@@ -53,6 +55,7 @@ const CertificateTemplate = ({ template, handleTemplateClick }) => {
           </svg>
         ) : (
           <svg
+            data-testid="inactive-circle"
             width="33"
             height="32"
             viewBox="0 0 33 32"
